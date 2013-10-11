@@ -8,6 +8,7 @@ puts "Checking for SASS ..."
 unless `which sass` =~ /sass/
   puts "Installing Sass ..."
   `gem install sass`
+  `gem install --version '~> 0.9' rb-fsevent`
 end
 
 puts "Setup Complete."
