@@ -83,6 +83,14 @@ Geocodr.showUserDrawer = function() {
     position: 'relative',
     left: ($(window).outerWidth() - $('.users-container').outerWidth()) / 2
   });
+
+  var $container = $('.users-container')
+  $('body').on('click', function(e) {
+    var offset = $container.offset()
+    if (e.clientX < offset.left || e.clientX > (offset.left + $container.outerWidth())) {
+      Geocodr.hideUserDrawer();
+    }
+  });
 }
 
 Geocodr.hideUserDrawer = function() {
@@ -93,6 +101,8 @@ Geocodr.hideUserDrawer = function() {
     position: 'absolute',
     left: '100%'
   });
+
+  $('body').off('click');
 }
 
 Geocodr.animateUserDrawer = function(opts) {
