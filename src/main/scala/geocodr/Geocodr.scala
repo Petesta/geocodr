@@ -6,6 +6,7 @@ import java.io._
 import java.net._
 import sys.process._
 import scala.concurrent._
+import scala.concurrent.duration._
 import scala.util.{ Try, Success, Failure }
 import ExecutionContext.Implicits.global
 import geocodr.github.search._
@@ -31,19 +32,11 @@ object ServerPlan extends unfiltered.filter.Plan {
 
     case req @ GET(Path(Seg("users" :: "info" :: username :: Nil))) =>
       val search = Users.search(QueryText(username), Users.SortedByFollowers, Asc)
-      val userInfo = search onComplete {
-        case Failure(t) => ???
-        case Success(ov) => ov match {
-          case None => ???
-          case Some(userSearch :: _) =>
-            userSearch.user onComplete {
-            case Failure(f) => ???
-            case Success(user) =>
-              user.get.info
-            }
-        }
-      }
-      Ok ~> JsonResponse(userInfo)
+      val userInfo = for {
+        Some(userSearch) <- search
+        user <- userSearch.head.user
+      } yield user.map(_.info)
+      Ok ~> JsonResponse(Await.result(userInfo, 1 second).get)
 
     case req @ (GET(_)) =>
       Ok ~> Scalate(req, "404.mustache")
