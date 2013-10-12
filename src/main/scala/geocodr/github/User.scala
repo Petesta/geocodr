@@ -44,7 +44,7 @@ object user {
     accountType: String
   ) {
 
-    def info: UserInfo = UserInfo(login, avatarUrl, location, Await.result(localUsers, 10 seconds))
+    def info: UserInfo = UserInfo(login, avatarUrl, location, Await.result(localUsers, 100 seconds))
 
     def localUsers = for {
       query <- Users.search(Location(location.getOrElse("San Francisco")), Users.SortedByFollowers, Desc)
