@@ -73,7 +73,7 @@ function drawLangPiechart(selector) {
 
 // Drawer animation
 // ------------------------------------
-var drawerTransitionTime = 500; // ms
+var drawerTransitionTime = 600; // ms
 
 function showDrawer() {
   animateDrawer({
