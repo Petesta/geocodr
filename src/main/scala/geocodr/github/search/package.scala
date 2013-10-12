@@ -19,8 +19,9 @@ package object search {
     def +[B >: A <: SearchQuery](o: B): CompoundQuery[B] = CompoundQuery[B]((queries :+ o): _*)
   }
 
-  trait UserSearchQuery extends SearchQuery
+  trait LocationSearchQuery extends SearchQuery
   trait RepositorySearchQuery extends SearchQuery
+  trait UserSearchQuery extends SearchQuery
   
   /* Support text as a SearchQuery */
   case class QueryText(name: String) extends SearchQuery with UserSearchQuery with RepositorySearchQuery {
@@ -30,8 +31,16 @@ package object search {
   implicit def stringToText(s: String) = QueryText(s)
   
   /* Common Queries Here */
-  case class SearchIn(text: String, fields: List[String]) extends RepositorySearchQuery {
-    def query = s"$text in:${fields.mkString(",")}"
+  case class SearchIn(fields: List[String]) extends UserSearchQuery with RepositorySearchQuery {
+    def query = s"in:${fields.mkString(",")}"
+  }
+
+  case class Language(language: String) extends UserSearchQuery with RepositorySearchQuery {
+    def query = s"language:${language.map(_.toLower).mkString("")}"
+  }
+
+  case class Location(location: String) extends UserSearchQuery with RepositorySearchQuery {
+    def query = s"location:$location"
   }
 
   /* Sizing Constraints */
@@ -62,7 +71,6 @@ package object search {
   case class Range(start: Int, end: Int) extends SizeConstraint {
     def filter = s"$start..$end"
   }
-
 
   /* Order */
   sealed trait Order {
