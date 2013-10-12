@@ -166,7 +166,7 @@ Geocodr.drawLangPiechart = function(selector, langData) {
 // ------------------------------------
 Geocodr.fillStarsTable = function(self, other) {
   function repoLink(owner, name) {
-    return "<a href='http://www.github.com/"+owner+"/"+name+"'>"+name+"</a>";
+    return "<a target='_blank' href='http://www.github.com/"+owner+"/"+name+"'>"+name+"</a>";
   }
 
   var $tbody = $('.starred-repos tbody')
