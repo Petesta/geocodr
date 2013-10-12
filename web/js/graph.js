@@ -135,6 +135,7 @@ Geocodr.initGraph = function(username) {
           d3.select(this)
             .attr("x", function(d) { d.x += Math.cos(r) * 5 })
             .attr("y", function(d) { d.y += Math.sin(r) * 5 })
+          force.resume();
         });
 
     n.append("image")
