@@ -49,7 +49,7 @@ object Users {
       login <- (c --\ "login").as[String]
       id <- (c --\ "id").as[Long]
       avatar <- (c --\ "avatar_url").as[String]
-      gravatarId <- (c --\ "gravatar_id").as[String]
+      gravatarId <- (c --\ "gravatar_id").as[Option[String]]
       followers <- (c --\ "followers_url").as[String]
       subscriptions <- (c --\ "subscriptions_url").as[String]
       organizations <- (c --\ "organizations_url").as[String]
@@ -82,7 +82,7 @@ object Users {
       login: String,
       id: Long,
       avatar: Url,
-      gravatarId: String,
+      gravatarId: Option[String],
       followers: Url,
       subscriptions: Url,
       organizations: Url,
@@ -111,18 +111,15 @@ object Users {
   }
   def search(sq: CompoundQuery[UserSearchQuery], s: UsersSearchSort, o: Order)/*: Future[UserSearch]*/ = {
     val url = root / "search" / "users"
-    val params = Map("q" -> sq.query, "sort" -> s.sort, "order" -> o.order) 
+    val params = Map("q" -> sq.query)//, "sort" -> s.sort, "order" -> o.order)
     val future = Http(url <:< Seq("Accept" -> "application/vnd.github.preview") <<? params OK as.String)
     for {
       result <- future
     } yield Parse.parse(result) match {
-      case -\/(e) => ???
+      case -\/(e) => throw new Exception(e)
       case \/-(json) =>
         (json -| "items").map(_.array).flatten.map { is =>
-          is.map(x => x.as[UserSearch].toOption).sequence
-        } match {
-          case None => ???
-          case Some(v) => v
+          is.map(x => x.as[UserSearch].toEither match { case Left(e) => throw new Exception(e.toString); case Right(v) => v })
         }
     }
   }

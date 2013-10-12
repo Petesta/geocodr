@@ -12,7 +12,7 @@ object user {
   implicit def UserInfoEncodeJson =
     jencode4L((ui: UserInfo) => (ui.name, ui.avatarUrl, ui.location, ui.nearbyUsers))("name", "avatarUrl", "location", "nearbyUsers")
 
-  case class UserInfo(name: String, avatarUrl: String, location: String, nearbyUsers: List[User])
+  case class UserInfo(name: String, avatarUrl: String, location: Option[String], nearbyUsers: List[User])
 
   case class User (
     login: String,

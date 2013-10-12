@@ -17,7 +17,8 @@ package object search {
 
   /* A Sequence of Queries */
   case class CompoundQuery[+A <: SearchQuery](queries: A*) {
-    def query = queries.map(_.query).mkString(" ")
+    def query = queries.map(q => q.query).mkString(" ")
+
     def +[B >: A <: SearchQuery](o: B): CompoundQuery[B] = CompoundQuery[B]((queries :+ o): _*)
   }
 
