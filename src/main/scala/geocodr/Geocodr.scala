@@ -13,6 +13,9 @@ object HelloPlan extends unfiltered.filter.Plan {
     case req @ (GET(Path("/app")) | GET(Path("/"))) =>
       Ok ~> Scalate(req, "app.mustache")
 
+    case req @ (GET(Path("/graph"))) =>
+      Ok ~> Scalate(req, "graph.mustache")
+
     // GET /users?username=<name>
     case req @ (GET(Path("/users"))) =>
       req match {

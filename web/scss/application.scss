@@ -5,6 +5,7 @@
 @import "components/forms";
 
 @import "login";
+@import "graph";
 @import "users";
 
 html { overflow-y: scroll; }
@@ -24,8 +25,6 @@ a {
   text-decoration: none;
   &:hover { text-decoration: underline; }
 }
-
-//p { font-family: $textFontFamily; }
 
 h1 {
   color: $primary;
@@ -55,12 +54,6 @@ h2 {
 //.cta-container   { outline: 1px solid green; }
 //.login-container { outline: 1px solid blue; }
 
-.login-page-container {
-  @include clearfix;
-  margin-left: 100px;
-  padding-top: 50px;
-  width: 70%;
-}
 
 // circles
 .circle {
@@ -69,4 +62,10 @@ h2 {
   border: 2px solid rgba(0, 0, 0, .4);
 }
 
-.users-page-container {}
+
+
+.page-container {
+  @include clearfix;
+  position: absolute;
+  width: 100%;
+}

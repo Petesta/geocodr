@@ -95,27 +95,69 @@ function animateDrawer(opts) {
 
 
 
+
+
+
+var slideTime = 750; // ms
+
+
+
+
+
+function hideLoginPage() {
+  var $container = $('.login-page-container');
+  $container.animate({
+    'top': '-100%'
+  }, slideTime, function() {
+    $container.remove();
+  });
+}
+
+
+function showGraphPage(username) {
+  var $container = $('.graph-page-container');
+  $container.load('/graph?username=' + username, function() {
+    $container.animate({
+      'top': '50px',
+    }, slideTime);
+  });
+}
+
+
+// Load and slide in user page in from the right
+function showUserPage(username) {
+  // TODO: fix params
+  //$('.users-page-container').load('/users?username=' + username, function() {
+    //$('body').animate({ backgroundColor: '#f4f4f4' });
+
+    //drawLangPiechart('.chart-you');
+    //drawLangPiechart('.chart-them');
+    //showDrawer();
+  //});
+}
+
+
+
 $(function() {
   // TODO: Why isn't HTML autofocus working? All of my hate.
   $('#name').focus();
 
-  $('.username-form').submit(function() {
-    var $field =  $(this).find("#name"),
+  $('.graph-page-container').css({
+    left: ($(window).outerWidth() - $('.graph-page-container').outerWidth()) / 2
+  })
+
+  $('.username-form').submit(function(e) {
+    var $field   = $(this).find("#name"),
         username = $field.val();
 
     if (username === '') {
       $field.addClass('field-error')
     } else {
-      // TODO: this isn't quite the intended behavior.
-      // We should be loading the graph page with <username> as the center, but this
-      // serves for demonstration purposes
-      $('.users-page-container').load('/users?username=' + username, function() {
-        drawLangPiechart('.chart-you');
-        drawLangPiechart('.chart-them');
-        showDrawer();
-      });
+      hideLoginPage()
+      showGraphPage();
     }
 
+    e.preventDefault();
     return false;
   });
 });

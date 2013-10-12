@@ -1,3 +1,11 @@
+.login-page-container {
+  @include clearfix;
+  margin-left: 100px;
+  top: 50px;
+}
+
+.login-container { width: 70%; }
+
 .cta-container, .username-container {
   @include border-box;
   float: left;
