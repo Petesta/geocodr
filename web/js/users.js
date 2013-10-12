@@ -76,6 +76,7 @@ Geocodr.drawLangPiechart = function(selector) {
 var drawerTransitionTime = 600; // ms
 
 Geocodr.showUserDrawer = function() {
+  $('.btn-back').show();
   $('body').animate({ backgroundColor: '#e5e5e5' }); // Darken a bit
 
   this.animateUserDrawer({
@@ -85,7 +86,7 @@ Geocodr.showUserDrawer = function() {
 }
 
 Geocodr.hideUserDrawer = function() {
-  $('.btn-back').remove();
+  $('.btn-back').hide();
   $('body').animate({ backgroundColor: '#f4f4f4' }); // Back to light
 
   this.animateUserDrawer({

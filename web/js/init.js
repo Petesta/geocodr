@@ -22,13 +22,15 @@ Geocodr.showGraphPage = function(username) {
 }
 
 // Load and slide in user page in from the right
-Geocodr.showUserPage = function(username) {
+Geocodr.showUserPage = function(options) {
   // TODO: fix params
-  $('.users-page-container').load('/users?username=' + username, function() {
+  $('.users-page-container').load('/users?username=' + options.username, function() {
     Geocodr.drawLangPiechart('.chart-you');
     Geocodr.drawLangPiechart('.chart-them');
-    $('.user-photo.you').css('background', "url('https://0.gravatar.com/avatar/eedc3687a5e76c282e43508e29cd67b7?d=https%3A%2F%2Fidenticons.github.com%2F2cd91248fe0d57b51dc83ffbe5782325.png&s=440')");
-    $('.user-photo.them').css('background', "url('http://i.imgur.com/HdeUiJP.jpg')");
+
+    $('.user-photo.you').css('background', "url('"+options.selfphoto+"')");
+    $('.user-photo.them').css('background', "url('"+options.otherphoto+"')");
+
     Geocodr.showUserDrawer();
   });
 }

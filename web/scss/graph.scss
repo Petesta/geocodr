@@ -7,6 +7,7 @@
 .graph-container {
   margin: 0 auto;
   width: 960px;
+  text-align: center;
 
   svg {
     height: 600px;
@@ -25,6 +26,11 @@
   stroke: #000;
 }
 
+.node-self .graph-circle {
+  stroke: $primary-alt;
+  stroke-width: 8px;
+}
+
 .loading-dot {
   fill: $primary;
 }
@@ -32,3 +38,6 @@
 .graph-link {
   stroke: #aaa;
 }
+
+.node:hover      { cursor: pointer; }
+.node-self:hover { cursor: auto; }
