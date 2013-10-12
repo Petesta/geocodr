@@ -10,8 +10,8 @@ package object search {
   val root = url("https://api.github.com")
   
   val b64 = new sun.misc.BASE64Encoder().encode {
-      (System.getenv("GITUSER") + ":" + System.getenv("GITPASS")).getBytes
-    }
+    s"${System.getenv("GITUSER")}:${System.getenv("GITPASS")}".getBytes
+  }
 
   val globalHeaders = 
     List("Accept" -> "application/vnd.github.preview", "Authorization" -> ("Basic " + b64))
