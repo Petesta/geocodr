@@ -22,3 +22,5 @@ project/plugins/project/
 Session.vim
 .netrwhist
 *~
+.sass-cache/
+web/css/

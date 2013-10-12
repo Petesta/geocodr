@@ -1,5 +1,6 @@
-$color: red;
+@import "lib/variables";
+@import "lib/mixins";
 
 body {
-    background-color: $color;
+    background-color: $off-white;
 }
