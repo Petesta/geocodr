@@ -15,6 +15,6 @@
 }
 
 .btn-blue {
-  background-color: $blue;
-  &:hover { background-color: darken($blue, 5%); }
+  background-color: $primary-alt;
+  &:hover { background-color: darken($primary-alt, 5%); }
 }

@@ -19,7 +19,7 @@ object HelloPlan extends unfiltered.filter.Plan {
     case req @ (GET(Path(Seg("users" :: username :: Nil)))) =>
       Ok ~> Scalate(req, "user.ssp", "username" -> username)
 
-    case req @ GET(_) => Ok ~> Scalate(req, "helloWorld.ssp")
+    case req => throw new Exception(req.toString())
   }
 }
 
