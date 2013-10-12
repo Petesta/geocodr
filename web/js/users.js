@@ -74,3 +74,12 @@ $(function() {
   drawLangPiechart('.chart-you');
   drawLangPiechart('.chart-them');
 });
+
+
+//window.go = function() {
+  //$('.users-container').animate({
+    //position: 'relative',
+    //left: 0,
+    //margin: '0 auto'
+  //}, 1000)
+//}
