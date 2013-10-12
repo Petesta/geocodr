@@ -109,7 +109,7 @@ Geocodr.initGraph = function(username) {
     n = node.enter().insert("g", "g.node")
         .attr("class", function(d) { return d.fixed ? "node node-self" : "node" })
         .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
-        .attr("desc", function(d) { return d.login; })
+        .attr("desc", function(d) { return d.name; }) // Store username for grabbing later
         .on("click", function() {
           // TODO: hasClass isn't working here? WTF
           if ($(this).attr("class").indexOf("node-self") > -1) return false;
@@ -176,13 +176,14 @@ Geocodr.initGraph = function(username) {
     $header.find(".count").text(data.nearbyUsers.length);
     $header.fadeIn();
 
-    // data.nearbyUsers.forEach(function(n) {
-    //   var r = Math.random() * 2 * Math.PI;
-    //   n.x = imgWidth/2 + Math.cos(r) * 100;
-    //   n.y = imgHeight/2 + Math.sin(r) * 100;
-    //   n.img = n.gravtar_url;
-    // });
-    // nodes = nodes.concat(data.users);
+    var nearbyUsers = data.nearbyUsers;
+    nearbyUsers.forEach(function(n) {
+      var r = Math.random() * 2 * Math.PI;
+      n.x = imgWidth/2 + Math.cos(r) * 100;
+      n.y = imgHeight/2 + Math.sin(r) * 100;
+      n.img = n.avatarUrl;
+    });
+    nodes = nodes.concat(nearbyUsers);
     endLoading()
   });
 
