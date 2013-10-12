@@ -1,15 +1,3 @@
-var data = [
-  {
-    name: 'ruby',
-    percent: 90
-  },
-  {
-    name: 'coffeescript',
-    percent: 10
-  }
-];
-
-
 // Lang intersection summary
 // ------------------------------------
 // Intersection of two arrays
@@ -74,6 +62,21 @@ Geocodr.fillLangSummary = function(self, other) {
 // Lang pie charts
 // ------------------------------------
 Geocodr.drawLangPiechart = function(selector) {
+  //$.getJSON('/users/', function(data) {
+  //  var langData = data.langs;
+  //});
+
+  var langData = [
+    {
+      name: 'ruby',
+      percent: 90
+    },
+    {
+      name: 'coffeescript',
+      percent: 10
+    }
+  ];
+
   // Dimensions
   var w = h = $('.chart').outerWidth(); // Delegate width to CSS
 
@@ -100,7 +103,7 @@ Geocodr.drawLangPiechart = function(selector) {
 
   // Set up groups
   arcs = svg.selectAll("g.arc")
-            .data(pie(data))
+            .data(pie(langData))
             .enter()
             .append('g')
             .attr('class', 'arc')
@@ -125,7 +128,7 @@ Geocodr.drawLangPiechart = function(selector) {
 
   d3.select(selector + " .legend")
     .selectAll('li')
-    .data(data)
+    .data(langData)
     .enter()
     .append('li')
     .html(function(d, i) { return swatchFor(d,i); })
