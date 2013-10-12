@@ -12,6 +12,7 @@ Geocodr.hideLoginPage = function() {
 Geocodr.showGraphPage = function(username) {
   var $container = $('.graph-page-container');
   $container.load('/graph?username=' + username, function() {
+    $('body').animate({ backgroundColor: '#f4f4f4' });
     $container.animate({
       'top': '50px',
     }, slideTime);
@@ -24,8 +25,6 @@ Geocodr.showGraphPage = function(username) {
 Geocodr.showUserPage = function(username) {
   // TODO: fix params
   $('.users-page-container').load('/users?username=' + username, function() {
-    $('body').animate({ backgroundColor: '#f4f4f4' });
-
     Geocodr.drawLangPiechart('.chart-you');
     Geocodr.drawLangPiechart('.chart-them');
     Geocodr.showUserDrawer();
