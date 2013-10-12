@@ -46,7 +46,7 @@ object user {
   ) {
 
     def info(center: Boolean = false): UserInfo = {
-      val nearby = if (!center) { List.empty } else { Await.result(localUsers, 10 seconds).take(10) }
+      val nearby = if (!center) { List.empty } else { Await.result(localUsers, 10 seconds).filter(_.login != this.login).take(10) }
       UserInfo(login, avatarUrl, location, nearby)
     }
 
