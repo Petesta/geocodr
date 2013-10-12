@@ -75,7 +75,7 @@ object Repositories {
     def repository = {
       val url = root / "user" / "repos"
       for {
-       rawJson <- Http(url OK as.String)
+       rawJson <- Http(url <:< globalHeaders OK as.String)
       } yield rawJson.decodeOption[Repository]
     }
   }

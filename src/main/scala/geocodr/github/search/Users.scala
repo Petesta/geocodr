@@ -95,7 +95,7 @@ object Users {
     def user = {
       val url = root / "users" / login
       for {
-       rawJson <- Http(url OK as.String)
+       rawJson <- Http(url <:< globalHeaders OK as.String)
       } yield rawJson.decodeOption[User]
     }
   }
