@@ -52,10 +52,10 @@ object Repositories {
   def search(sq: CompoundQuery[RepositoriesSearchQuery], s: RepositoriesSearchSort, o: Order) = {
     val url = root / "search" / "repositories"
     val params = Map("q" -> sq.query, "sort" -> s.sort, "order" -> o.order) 
-    Http(url <:< Seq("Accept" -> "application/vnd.github.preview") <<? params OK as.String)
+    Http(url <:< globalHeaders <<? params OK as.String)
   }
 
   def userRepos(repositories: Req) = {
-    val result = Http(repositories OK as.String)
+    // val result = Http(repositories OK as.String)
   }
 }
