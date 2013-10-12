@@ -108,7 +108,7 @@ Geocodr.initGraph = function(username) {
 
     n = node.enter().insert("g", "g.node")
         .attr("class", function(d) { return d.fixed ? "node node-self" : "node" })
-        .attr("transform", function(d) { return "translate(" + d.x/2 + "," + d.y/2 + ")"; })
+        .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
         .attr("desc", function(d) { return d.login; })
         .on("click", function() {
           // TODO: hasClass isn't working here? WTF
@@ -165,18 +165,13 @@ Geocodr.initGraph = function(username) {
   loadingAnim();
 
   // Load user as fixed self node
-  console.log("/users/info/"+username+".json");
-    nodes[0].name = data.name;
-    nodes[0].img  = data.gravatar_url;
-    restart();
-  });
+  //   nodes[0].name = data.name;
+  //   nodes[0].img  = data.gravatar_url;
+  //   restart();
+  // });
 
   // Load user graph
-  var loadingDelay = 1000; // ms
-
-  setTimeout(function(){
-  $.getJSON("/users/info/"+username+".json", function(data) {
-    console.log(data);
+  $.getJSON("/users/info/"+username, function(data) {
     nodes[0].name = data.name;
     nodes[0].img = data.avatarUrl;
     $(".node-self").find("image").attr("href", data.avatarUrl);
@@ -188,8 +183,7 @@ Geocodr.initGraph = function(username) {
     //   n.img = n.gravtar_url;
     // });
     // nodes = nodes.concat(data.users);
-    endLoading();
-  })}, 1000);
-  }, loadingDelay);
+    endLoading()
+  });
 
 };

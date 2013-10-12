@@ -53,7 +53,7 @@ $(function() {
       $field.addClass('field-error')
     } else {
       Geocodr.hideLoginPage()
-      Geocodr.showGraphPage();
+      Geocodr.showGraphPage(username);
     }
 
     e.preventDefault();
