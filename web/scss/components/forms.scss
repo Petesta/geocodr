@@ -1,0 +1,41 @@
+form {
+  @include clearfix;
+
+  label {
+    font-weight: bold;
+    font-size: 1.2em;
+    display: inline-block;
+    margin-bottom: 10px;
+  }
+
+  input:not([type="submit"]),
+  textarea {
+    @include border-box;
+    //@include border-radius(3px);
+    font-size: 1.2em;
+    border: 1px solid lighten(#ccc, 8);
+    //margin-bottom: 20px;
+    padding: 12px 7px;
+    //width: 100%;
+
+    &:focus {
+      //border-color: lighten($blue, 15);
+      outline: none;
+    }
+
+    //&.field-error { border-color: $red; }
+  }
+
+
+  textarea {
+    height: 10em;
+    overflow: auto; // Remove scrollbar in IE
+  }
+
+  input[type="submit"] {
+    display: block;
+    //margin: 10px auto;
+
+    @include mobile { margin-bottom: 30px; }
+  }
+}

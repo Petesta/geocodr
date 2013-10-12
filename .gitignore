@@ -17,7 +17,6 @@ project/plugins/project/
 .scala_dependencies
 
 # Vim
-*.s[a-w][a-z]
 *.un~
 Session.vim
 .netrwhist
