@@ -3,9 +3,12 @@
 }
 
 .graph-container {
-  //outline: 1px solid red;
   margin: 0 auto;
   width: 960px;
+
+  svg {
+    height: 600px;
+  }
 }
 
 

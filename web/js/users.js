@@ -12,7 +12,7 @@ var data = [
 
 // Lang pie charts
 // ------------------------------------
-function drawLangPiechart(selector) {
+Geocodr.drawLangPiechart = function(selector) {
   // Dimensions
   var w = h = $('.chart').outerWidth(); // Delegate width to CSS
 
@@ -75,92 +75,20 @@ function drawLangPiechart(selector) {
 // ------------------------------------
 var drawerTransitionTime = 600; // ms
 
-function showDrawer() {
-  animateDrawer({
+Geocodr.showUserDrawer = function() {
+  this.animateUserDrawer({
     position: 'relative',
     left: ($(window).outerWidth() - $('.users-container').outerWidth()) / 2
   });
 }
 
-function hideDrawer() {
-  animateDrawer({
+Geocodr.hideUserDrawer = function() {
+  this.animateUserDrawer({
     position: 'absolute',
     left: '100%'
   });
 }
 
-function animateDrawer(opts) {
+Geocodr.animateUserDrawer = function(opts) {
   $('.users-container').animate(opts, drawerTransitionTime);
 }
-
-
-
-
-
-
-var slideTime = 750; // ms
-
-
-
-
-
-function hideLoginPage() {
-  var $container = $('.login-page-container');
-  $container.animate({
-    'top': '-100%'
-  }, slideTime, function() {
-    $container.remove();
-  });
-}
-
-
-function showGraphPage(username) {
-  var $container = $('.graph-page-container');
-  $container.load('/graph?username=' + username, function() {
-    $container.animate({
-      'top': '50px',
-    }, slideTime);
-
-    initGraph();
-    startGraph();
-  });
-}
-
-
-// Load and slide in user page in from the right
-function showUserPage(username) {
-  // TODO: fix params
-  //$('.users-page-container').load('/users?username=' + username, function() {
-    //$('body').animate({ backgroundColor: '#f4f4f4' });
-
-    //drawLangPiechart('.chart-you');
-    //drawLangPiechart('.chart-them');
-    //showDrawer();
-  //});
-}
-
-
-
-$(function() {
-  // TODO: Why isn't HTML autofocus working? All of my hate.
-  $('#name').focus();
-
-  $('.graph-page-container').css({
-    left: ($(window).outerWidth() - $('.graph-page-container').outerWidth()) / 2
-  })
-
-  $('.username-form').submit(function(e) {
-    var $field   = $(this).find("#name"),
-        username = $field.val();
-
-    if (username === '') {
-      $field.addClass('field-error')
-    } else {
-      hideLoginPage()
-      showGraphPage();
-    }
-
-    e.preventDefault();
-    return false;
-  });
-});

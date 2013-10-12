@@ -6,9 +6,15 @@ import java.io._
 import java.net._
 import sys.process._
 import scala.concurrent._
+import scala.util.{ Try, Success, Failure }
 import ExecutionContext.Implicits.global
+import geocodr.github.search._
+import geocodr.github.user._
+import argonaut._
+import Argonaut._
+import argonaut.integrate.unfiltered._
 
-object HelloPlan extends unfiltered.filter.Plan {
+object ServerPlan extends unfiltered.filter.Plan {
   def intent = {
     case req @ (GET(Path("/app")) | GET(Path("/"))) =>
       Ok ~> Scalate(req, "app.mustache")
@@ -23,6 +29,22 @@ object HelloPlan extends unfiltered.filter.Plan {
           Ok ~> Scalate(req, "user.mustache", "username" -> params("username"))
       }
 
+    case req @ GET(Path(Seg("users" :: "info" :: username :: Nil))) =>
+      val search = Users.search(QueryText(username), Users.SortedByFollowers, Asc)
+      val userInfo = search onComplete {
+        case Failure(t) => ???
+        case Success(ov) => ov match {
+          case None => ???
+          case Some(userSearch :: _) =>
+            userSearch.user onComplete {
+            case Failure(f) => ???
+            case Success(user) =>
+              user.info
+            }
+        }
+      }
+      Ok ~> JsonResponse(userInfo)
+
     case req @ (GET(_)) =>
       Ok ~> Scalate(req, "404.mustache")
   }
@@ -33,7 +55,7 @@ object Geocodr {
     val watch = future { "sass --watch web/scss:web/css".!! }
     val server = Http.local(8080).context("/assets") {
       _.resources(new URL(s"file://${System.getProperty("user.dir")}/web"))
-    }.filter(HelloPlan)
+    }.filter(ServerPlan)
     server.run()
   }
 }
