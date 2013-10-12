@@ -68,7 +68,7 @@
 
   .user-photo {
     @include border-box;
-    border: 1px solid red; // TODO
+    background-size: cover !important;
     border-radius: 50%;
     width: $user-photo-size;
     height: $user-photo-size;
@@ -81,6 +81,8 @@
     margin-top: $user-photo-size / 2;
     width: $photo-container-width - (2 * $user-photo-size);
   }
+
+  p { margin: 20px 0 0; }
 }
 
 .panel-langs {

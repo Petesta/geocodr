@@ -27,6 +27,8 @@ Geocodr.showUserPage = function(username) {
   $('.users-page-container').load('/users?username=' + username, function() {
     Geocodr.drawLangPiechart('.chart-you');
     Geocodr.drawLangPiechart('.chart-them');
+    $('.user-photo.you').css('background', "url('https://0.gravatar.com/avatar/eedc3687a5e76c282e43508e29cd67b7?d=https%3A%2F%2Fidenticons.github.com%2F2cd91248fe0d57b51dc83ffbe5782325.png&s=440')");
+    $('.user-photo.them').css('background', "url('http://i.imgur.com/HdeUiJP.jpg')");
     Geocodr.showUserDrawer();
   });
 }
