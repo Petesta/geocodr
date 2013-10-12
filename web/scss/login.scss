@@ -1,0 +1,38 @@
+.cta-container, .username-container {
+  @include border-box;
+  float: left;
+  width: 50%;
+}
+
+.cta-container {
+  border-right: 1px solid $border-color;
+  padding: 165px 50px 150px 0;
+  width: 45%;
+
+  h1 {
+    font-size: 3.3em;
+  }
+
+  p {
+    font-size: 1.3em;
+    color: lighten($text-color, 40);
+  }
+}
+
+.username-container {
+  padding: 205px 0 240px 60px;
+  width: 55%;
+
+  input {
+    float: left;
+  }
+
+  input[type="text"] {
+    margin-right: 3%;
+    width: 80%;
+  }
+
+  input[type="submit"] {
+    width: 17%;
+  }
+}
