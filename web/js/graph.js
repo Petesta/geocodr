@@ -23,10 +23,6 @@ Geocodr.initGraph = function(username) {
     },
   ]
 
-
-
-
-
   var loading = true,
       numLoading = 20;
 
@@ -165,23 +161,21 @@ Geocodr.initGraph = function(username) {
   force.stop();
   loadingAnim();
 
-  $.getJSON("/assets/js/initialResponse.json", function(data) {
-    nodes[0].name = data.name;
-    nodes[0].img = data.gravatar_url;
-    $("node-disabled").find("img").attr("href", data.gravatar_url);
-    $("node-disabled").find("text").contents(data.name);
-    restart();
-  });
-
+  console.log("/users/info/"+username+".json");
   setTimeout(function(){
-  $.getJSON("/assets/js/response.json.js", function(data) {
-    data.users.forEach(function(n) {
-      var r = Math.random() * 2 * Math.PI;
-      n.x = imgWidth/2 + Math.cos(r) * 100;
-      n.y = imgHeight/2 + Math.sin(r) * 100;
-      n.img = n.gravtar_url;
-    });
-    nodes = nodes.concat(data.users);
+  $.getJSON("/users/info/"+username+".json", function(data) {
+    console.log(data);
+    nodes[0].name = data.name;
+    nodes[0].img = data.avatarUrl;
+    $(".node-self").find("image").attr("href", data.avatarUrl);
+    $(".node-self").find("text").text(data.name);
+    // data.users.forEach(function(n) {
+    //   var r = Math.random() * 2 * Math.PI;
+    //   n.x = imgWidth/2 + Math.cos(r) * 100;
+    //   n.y = imgHeight/2 + Math.sin(r) * 100;
+    //   n.img = n.gravtar_url;
+    // });
+    // nodes = nodes.concat(data.users);
     endLoading();
   })}, 1000);
 
