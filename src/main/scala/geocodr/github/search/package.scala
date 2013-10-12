@@ -1,5 +1,7 @@
 package geocodr.github
 
+import com.github.nscala_time.time.Imports._
+
 import dispatch._
 import Defaults._
 
@@ -43,46 +45,40 @@ package object search {
     def query = s"location:$location"
   }
 
-  /* Sizing Constraints */
-  sealed trait SizeConstraint {
+  trait Constrainable[A]
+
+  sealed class Constraint[A: Constrainable] {
     def filter: String
   }
 
-  case class Eq(value: Int) extends SizeConstraint {
+  implicit object DateTimeConstr extends Constrainable[DateTime]
+  implicit object IntConstr extends Constrainable[Int]
+
+
+  case class Eq[A](value: A) extends Constrainable[A] {
     def filter = value.toString
   }
 
-  case class LessThan(bound: Int) extends SizeConstraint {
-    def filter = s"<$bound"
+  case class LessThan[A](value: A) extends Constrainable[A] {
+    def filter = s"<$value"
   }
 
-  case class LessThanEq(bound: Int) extends SizeConstraint {
-    def filter = s"<=$bound"
+  case class LessThanEq[A](value: A) extends Constrainable[A] {
+    def filter = s"<=$value"
   }
 
-  case class GreaterThan(bound: Int) extends SizeConstraint {
-    def filter = s">$bound"
+  case class GreaterThan[A](value: A) extends Constrainable[A] {
+    def filter = s">$value"
   }
 
-  case class GreaterThanEq(bound: Int) extends SizeConstraint {
-    def filter = s">=$bound"
+  case class GreaterThanEq[A](value: A) extends Constrainable[A] {
+    def filter = s">=$value"
   }
 
-  case class Range(start: Int, end: Int) extends SizeConstraint {
+  case class Range[A](start: A, end: A) extends Constrainable[A] {
     def filter = s"$start..$end"
   }
   
-  /* For classes that are constrained by sizes */
-  trait ComparableOps[A] {
-    val constructor: (SizeConstraint) => A
-    def ==(x: Int) = constructor(Eq(x))
-    def <(x: Int)  = constructor(LessThan(x))
-    def <=(x: Int) = constructor(LessThanEq(x))
-    def >(x: Int)  = constructor(GreaterThan(x))
-    def >=(x: Int) = constructor(GreaterThanEq(x))
-    def range(pair: (Int, Int)) = constructor(Range(pair._1, pair._2))
-  }
-
   /* Order */
   sealed trait Order {
     def order: String
