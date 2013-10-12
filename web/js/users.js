@@ -190,12 +190,15 @@ var drawerTransitionTime = 600; // ms
 
 Geocodr.showUserDrawer = function() {
   $('.btn-back').show();
-  $('body').animate({ backgroundColor: '#e5e5e5' }); // Darken a bit
 
-  this.animateUserDrawer({
-    position: 'relative',
-    left: ($(window).outerWidth() - $('.users-container').outerWidth()) / 2
+  $('body').animate({ backgroundColor: '#ddd' }, function() { // Darken a bit
+    Geocodr.animateUserDrawer({
+      position: 'relative',
+      left: ($(window).outerWidth() - $('.users-container').outerWidth()) / 2
+    }, 700);
+
   });
+
 
   // Hide drawer if clicking in gutter
   var $container = $('.users-container')
