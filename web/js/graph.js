@@ -113,8 +113,7 @@ Geocodr.initGraph = function(username) {
         .on("click", function() {
           // TODO: hasClass isn't working here? WTF
           if ($(this).attr("class").indexOf("node-self") > -1) return false;
-
-
+          var initP;
           var $self  = $('.node-self');
           selfphoto  = $self.find("image").last().attr("href")
           otherphoto = $(this).find("image").attr("href");
@@ -130,28 +129,31 @@ Geocodr.initGraph = function(username) {
             }
           });
         })
-        .on("mouseover", function(e) {
-          d3.select(this) .attr("init", [e.offsetX, e.offsetY]);
+        .on("mouseover", function() {
+          initP = d3.mouse(this);
         })
-        .on("mousemove", function(e) {
-          var init = d3.select(this).attr("init");
-          d3.select(this)
-            .attr("x", function(d) { 
+        .on("mousemove", function() {
+          if(initP !== undefined) {
+          var sel = d3.select(this)
+          var m = d3.mouse(this);
+            sel.attr("x", function(d) {
+              if(isNaN(d.x)) { d.x = sel.attr(x)}
               var x = d.x;
-              d.x += (e.offsetX - init[0]) * .1;
+              d.x += (m[0] - initP[0]) * .1;
               return x;
             })
             .attr("y", function(d) { 
+              if(isNaN(d.y)) { d.y = sel.attr(y)}
               var y = d.y;
-              d.y += (e.offsetY - init[1]) * .1;
+              d.y += (m[1] - initP[1]) * .1;
               return y;
             })
-            .attr("init", [e.offsetX, e.offsetY]);
-          console.log(d3.select(this).attr("x"));
+            initP = d3.mouse(this);
           force.resume();
+          }
         })
         .on("mouseout", function() {
-          d3.select(this).attr("init", null);
+          initP = undefined;
         });
 
     n.append("image")
