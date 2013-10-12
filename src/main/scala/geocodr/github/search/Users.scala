@@ -102,7 +102,7 @@ object Users {
 
     def repositories = ???
 
-    def user /*: Future[Option[User]] */ = {
+    def user: Future[User] = {
       val url = root / "users" / login
       for {
        rawJson <- Http(url OK as.String)

@@ -6,6 +6,14 @@ import argonaut._
 import Argonaut._
 
 object user {
+  implicit def EncodeUserListJson: EncodeJson[List[User]] =
+    EncodeJson((us: List[User]) => jArray(us.map(u => UserInfoEncodeJson.encode(u.info))))
+
+  implicit def UserInfoEncodeJson =
+  jencode4L((ui: UserInfo) => (ui.name, ui.avatarUrl, ui.location, ui.nearbyUsers))("name", "avatarUrl", "location", "nearbyUsers")
+
+  case class UserInfo(name: String, avatarUrl: String, location: String, nearbyUsers: List[User])
+
   case class User (
     login: String,
     id: Long,
@@ -27,7 +35,7 @@ object user {
     createdAt: String,
     accountType: String
   ) {
-    case UserInfo(name: String, avatarUrl: String, location: String, close: List[User])
+    def info = UserInfo(login, avatarUrl, location, Nil)
   }
 
   implicit def UserCodecJson =
