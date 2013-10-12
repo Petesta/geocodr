@@ -170,7 +170,12 @@ Geocodr.initGraph = function(username) {
     nodes[0].img = data.avatarUrl;
     $(".node-self").find("image").attr("href", data.avatarUrl);
     $(".node-self").find("text").text(data.name);
-    $(".location").text(data.location);
+
+    $header = $('.graph-container h1');
+    $header.find(".location").text(data.location);
+    $header.find(".count").text(data.nearbyUsers.length);
+    $header.fadeIn();
+
     // data.nearbyUsers.forEach(function(n) {
     //   var r = Math.random() * 2 * Math.PI;
     //   n.x = imgWidth/2 + Math.cos(r) * 100;
