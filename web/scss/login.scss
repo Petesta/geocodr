@@ -4,7 +4,10 @@
   top: 50px;
 }
 
-.login-container { width: 70%; }
+.login-container {
+  @include clearfix;
+  width: 75%;
+}
 
 .cta-container, .username-container {
   @include border-box;
