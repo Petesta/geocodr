@@ -1,4 +1,4 @@
-Geocodr.initGraph = function() {
+Geocodr.initGraph = function(img_url, name) {
   var svg = d3.select(".graph-container svg")
 
   var $svg   = $('.graph-container svg'),
@@ -11,12 +11,11 @@ Geocodr.initGraph = function() {
 
   var fill = d3.scale.category10();
 
-  // TODO: remove dummy data
   var nodes = [
     {
       index: 0,
-      img:   "tristan.png",
-      name:  "Tristan",
+      img:   img_url,
+      name:  name,
       fixed: true,
       x: width/2,
       y: height/2
@@ -100,11 +99,19 @@ Geocodr.initGraph = function() {
 
 
   function endLoading() {
-    nodes = nodes.concat(nodes2);
     loading = false;
   }
 
-  svg.on('click', endLoading);
+  $.getJSON("/assets/js/response.json.js", function(data) {
+    data.users.forEach(function(n) {
+      var r = Math.random() * 2 * Math.PI;
+      n.x = imgWidth/2 + Math.cos(r) * 10;
+      n.y = imgHeight/2 + Math.sin(r) * 10;
+      n.img = n.gravtar_url;
+    });
+    nodes = nodes.concat(data.users);
+    endLoading();
+  });
 
   var links, force, link, node;
 
@@ -177,5 +184,4 @@ Geocodr.initGraph = function() {
   restart();
   force.stop();
   loadingAnim();
-  setTimeout(endLoading, 1500);
 };
