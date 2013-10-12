@@ -31,15 +31,15 @@ package object search {
   implicit def stringToText(s: String) = QueryText(s)
   
   /* Common Queries Here */
-  case class SearchIn(fields: List[String]) extends UserSearchQuery with RepositoriesSearchQuery {
+  case class SearchIn(fields: List[String]) extends SearchQuery with UserSearchQuery with RepositoriesSearchQuery {
     def query = s"in:${fields.mkString(",")}"
   }
 
-  case class Language(language: String) extends UserSearchQuery with RepositoriesSearchQuery {
+  case class Language(language: String) extends SearchQuery with UserSearchQuery with RepositoriesSearchQuery {
     def query = s"language:${language.map(_.toLower).mkString("")}"
   }
 
-  case class Location(location: String) extends UserSearchQuery with RepositoriesSearchQuery {
+  case class Location(location: String) extends SearchQuery with UserSearchQuery with RepositoriesSearchQuery {
     def query = s"location:$location"
   }
 
