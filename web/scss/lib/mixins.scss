@@ -1,0 +1,50 @@
+@mixin clearfix {
+  // http://nicolasgallagher.com/micro-clearfix-hack/
+  *zoom: 1;
+  &:before,
+  &:after {
+    display: table;
+    content: "";
+  }
+  &:after { clear: both; }
+}
+
+@mixin vendorize($property, $value) {
+  // Ex: @include vendorize(border-radius, 10px);
+  -webkit-#{$property}: $value;
+     -moz-#{$property}: $value;
+      -ms-#{$property}: $value;
+       -o-#{$property}: $value;
+          #{$property}: $value;
+}
+
+@mixin border-radius($rad: 2px) {
+  @include vendorize(border-radius, $rad);
+}
+
+@mixin border-box {
+  @include vendorize(box-sizing, border-box);
+}
+
+@mixin ease-out($time: 0.5s) {
+  @include vendorize(transition, $time ease-out);
+}
+
+@mixin box-shadow($horizOffset: 0px, $vertOffset: 0px, $blurDist: 0px, $spreadDist: 0px, $color: #000) {
+  @include vendorize(box-shadow, $horizOffset $vertOffset $blurDist $spreadDist $color)
+}
+
+@mixin inset-box-shadow($horizOffset: 0px, $vertOffset: 0px, $blurDist: 0px, $spreadDist: 0px, $color: #000) {
+  @include vendorize(box-shadow, inset $horizOffset $vertOffset $blurDist $spreadDist $color)
+}
+
+@mixin mobile {
+  @media (max-width: 630px) {
+    @content;
+  }
+}
+
+@mixin bold($font_size: 1em) {
+  font-size: $font_size;
+  font-weight: bold;
+}
