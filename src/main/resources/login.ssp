@@ -2,11 +2,11 @@
 <head>
   <meta name="viewport" content="width=device-width" />
   <link href="http://fonts.googleapis.com/css?family=Open+Sans:300" rel="stylesheet" type="text/css" />
-  <link href="assets/css/core.css" media="screen" type="text/css" rel="stylesheet" />
+  <link href="assets/css/application.css" media="screen" type="text/css" rel="stylesheet" />
 </head>
 <body>
 
-  <div class="container">
+  <div class="login-page-container">
     <div class="landing-container">
 
       <div class="cta-container">
@@ -14,7 +14,7 @@
         <p>Connect with developers like you in your area.</p>
       </div>
 
-      <div class="login-container">
+      <div class="username-container">
         <form action="">
           <input type="text" placeholder="Enter your GitHub username"/>
           <input type="submit" class="btn btn-large btn-blue" value="Go"/>
