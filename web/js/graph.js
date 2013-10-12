@@ -65,8 +65,8 @@ Geocodr.initGraph = function(user_name) {
       loadingDots.append("circle")
         .attr("class", "loading-dot")
         .attr("r", 5)
-        .attr("cx", (imgWidth/2 + 22) * Math.cos(i / numLoading * 2 * Math.PI))
-        .attr("cy", (imgWidth/2 + 22) * Math.sin(i / numLoading * 2 * Math.PI))
+        .attr("cx", (imgWidth/2 + 32) * Math.cos(i / numLoading * 2 * Math.PI))
+        .attr("cy", (imgWidth/2 + 32) * Math.sin(i / numLoading * 2 * Math.PI))
         });
 
   function tween(d, i, a) {
@@ -140,7 +140,7 @@ Geocodr.initGraph = function(user_name) {
 
     node.enter().insert("g", "g.node")
         .attr("class", "node")
-        .attr("transform", "translate(" + width/2 + "," + height/2 + ")")
+        .attr("transform", function(d) { return "translate(" + d.x/2 + "," + d.y/2 + ")"; });
 
     node.append("image")
           .attr("class", "profile-picture")
@@ -188,8 +188,8 @@ Geocodr.initGraph = function(user_name) {
   $.getJSON("/assets/js/response.json.js", function(data) {
     data.users.forEach(function(n) {
       var r = Math.random() * 2 * Math.PI;
-      n.x = imgWidth/2 + Math.cos(r) * 10;
-      n.y = imgHeight/2 + Math.sin(r) * 10;
+      n.x = imgWidth/2 + Math.cos(r) * 100;
+      n.y = imgHeight/2 + Math.sin(r) * 100;
       n.img = n.gravtar_url;
     });
     nodes = nodes.concat(data.users);
