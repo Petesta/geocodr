@@ -1,4 +1,10 @@
+<%@ var username %>
 <h1>user.ssp</h1>
 
-<%= username %>
 
+
+
+
+<div class="container">
+${username}
+</div>

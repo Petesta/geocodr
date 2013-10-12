@@ -13,7 +13,7 @@ object HelloPlan extends unfiltered.filter.Plan {
     case req @ (GET(Path("/login")) | GET(Path("/"))) =>
       Ok ~> Scalate(req, "login.ssp")
 
-    case req @ (GET(Path("/geo")) | GET(Path("/"))) =>
+    case req @ (GET(Path("/geo"))) =>
       Ok ~> Scalate(req, "geo.ssp")
 
     case req @ (GET(Path(Seg("users" :: username :: Nil)))) =>
