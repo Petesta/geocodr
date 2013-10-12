@@ -130,12 +130,28 @@ Geocodr.initGraph = function(username) {
             }
           });
         })
-        .on("mouseover", function() {
-          var r = Math.random() * Math.PI * 2;
+        .on("mouseover", function(e) {
+          d3.select(this) .attr("init", [e.offsetX, e.offsetY]);
+        })
+        .on("mousemove", function(e) {
+          var init = d3.select(this).attr("init");
           d3.select(this)
-            .attr("x", function(d) { d.x += Math.cos(r) * 5 })
-            .attr("y", function(d) { d.y += Math.sin(r) * 5 })
+            .attr("x", function(d) { 
+              var x = d.x;
+              d.x += (e.offsetX - init[0]) * .1;
+              return x;
+            })
+            .attr("y", function(d) { 
+              var y = d.y;
+              d.y += (e.offsetY - init[0]) * .1;
+              return y;
+            })
+            .attr("init", [e.offsetX, e.offsetY]);
+          console.log(d3.select(this).attr("x"));
           force.resume();
+        })
+        .on("mouseout", function() {
+          d3.select(this).attr("init", null);
         });
 
     n.append("image")

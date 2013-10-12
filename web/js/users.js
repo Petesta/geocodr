@@ -1,3 +1,7 @@
+Geocodr.langsRoute = '/users/languages/' // + username
+Geocodr.starsRoute = '/users/stars/'     // + username
+
+
 // Lang intersection summary
 // ------------------------------------
 // Intersection of two arrays
@@ -18,6 +22,10 @@ function intersection(a, b) {
 // Like Rails #to_sentence. Joins an array of language strings, eg.
 // 'ruby, python, and 2 others' or 'ruby and python'
 function langClause(commonLangs) {
+  commonLangs = commonLangs.filter(function(e) { return e.language })
+        .sort(function(a,b) { return b.percent - a.percent })
+        .map(function(e) { return e.language; });
+
   var commonLen = commonLangs.length,
       clause;
 
@@ -37,45 +45,37 @@ function langClause(commonLangs) {
   return clause;
 }
 
-Geocodr.fillLangSummary = function(self, other) {
-  // TODO: FUK U FUTURES Y U NO EXIST
-  $.getJSON('/users/lang?username='+self.username, function(selfData) {
-    $.getJSON('/users/lang?username='+other.username, function(otherData) {
-      var commonLangs = intersection(selfData.langs, otherData.langs),
-          clause      = langClause(commonLangs),
-          text        = self.username + ' and ' + other.username;
+Geocodr.fillLangSummary = function(self, other, selfLangs, otherLangs) {
+      var clause = langClause(intersection(selfLangs, otherLangs)),
+          text   = self.username + ' and ' + other.username;
 
-      if (clause === '') {
-        console.log("no common langs? that's hopefully wrong");
-        text += " don't write any of the same languages!";
-      } else {
-        text += ' both write ' + clause + '.';
-      }
+  if (clause === '') {
+    text += " don't write any of the same languages!";
+  } else {
+    text += ' both write ' + clause + '.';
+  }
 
-      $('.lang-summary').text(text);
-    });
-  });
+  $('.lang-summary').text(text);
 }
 
 
 
 // Lang pie charts
 // ------------------------------------
-Geocodr.drawLangPiechart = function(selector) {
-  //$.getJSON('/users/', function(data) {
-  //  var langData = data.langs;
-  //});
+Geocodr.drawLangPiechart = function(selector, langData) {
+  // langData = [
+  //   {
+  //     name: 'ruby',
+  //     percent: 90
+  //   },
+  //   {
+  //     name: 'coffeescript',
+  //     percent: 10
+  //   }
+  // ];
 
-  var langData = [
-    {
-      name: 'ruby',
-      percent: 90
-    },
-    {
-      name: 'coffeescript',
-      percent: 10
-    }
-  ];
+  langData = langData.filter(function(e) { return e.language; }); // Remove empty langs
+  langData = langData.sort(function(a,b) { return b.percent - a.percent }); // Sort by percent desc
 
   // Dimensions
   var w = h = $('.chart').outerWidth(); // Delegate width to CSS
@@ -86,7 +86,7 @@ Geocodr.drawLangPiechart = function(selector) {
 
   // Function that takes in dataset and returns dataset annotated with arc angles, etc
   var pie = d3.layout.pie()
-            .value(function(d) { return d.percent; }); // TODO
+            .value(function(d) { return d.percent; });
 
   var color = d3.scale.category20();
 
@@ -119,19 +119,34 @@ Geocodr.drawLangPiechart = function(selector) {
       .attr('d', arc);
 
   // Draw legend w/ labels
+  //var legendLangs = langData.sort(function(a,b) { return b.percent - a.percent }),
+  var legendLangs = langData,
+      drawEllipses = false;
+
+  if (legendLangs.length > 5) {
+    legendLangs = legendLangs.slice(0,5);
+    drawEllipses = true;
+  }
+
+
   function swatchFor(d, i) {
     if (d.percent === 0) return;
 
     //<span class="swatch" style="background-color: #08c"></span> Ruby
-    return "<span class='swatch' style='background-color: " + color(i) + "'></span> " + d.name;
+    return "<span class='swatch' style='background-color: " + color(i) + "'></span> " + d.language +
+      "<span class='percent'>("+d.percent.toFixed(2)+"%)</span>"
   }
 
   d3.select(selector + " .legend")
     .selectAll('li')
-    .data(langData)
+    .data(legendLangs)
     .enter()
     .append('li')
     .html(function(d, i) { return swatchFor(d,i); })
+
+  if (drawEllipses === true) {
+    $(selector).append("<div class='ellipses'>& "+(langData.length-5).toString()+" more...</div>");
+  }
 }
 
 
@@ -144,43 +159,29 @@ Geocodr.fillStarsTable = function(self, other) {
   }
 
   var $tbody = $('.starred-repos tbody')
-  // $.getJSON('/users/repos?username='+other.username, function(data) {
-  //   var repos = data.repos;
-  //   $('.common-repo-count').text("You and " + other.username + " have " + repos.length + " starred repos in common.");
+  // var repos  = [
+  //   { owner: "andrewberls", name: "regularity" },
+  //   { owner: "jroesch", name: "tweak" },
+  //   { owner: "andrewberls", name: "kona" },
+  //   { owner: "petesta", name: "geocodr" },
+  // ]
 
-  //   var $row, $cell, repo;
+  $.getJSON(Geocodr.starsRoute+other.username, function(data) {
+    var repos = data.repos;
+    $('.common-repo-count').text("You and " + other.username + " have " + repos.length + " starred repos in common.");
 
-  //   for (var i=0; i<repos.length; i++)  {
-  //     repo  = repos[i];
-  //     $row  = $("<tr>");
-  //     $cell = $("<td>");
-  //     $cell.append("<i class='icon icon-star'></i>")
-  //     $cell.append(repo.owner + " / " + repoLink(repo.owner, repo.name))
-  //     $row.append($cell);
-  //     $tbody.append($row);
-  //   }
-  // });
+    var $row, $cell, repo;
 
-  var repos  = [
-    { owner: "andrewberls", name: "regularity" },
-    { owner: "jroesch", name: "tweak" },
-    { owner: "andrewberls", name: "kona" },
-    { owner: "petesta", name: "geocodr" },
-    ]
-
-  $('.common-repo-count').text("You and " + other.username + " have " + repos.length + " starred repos in common.");
-
-  var $row, $cell, repo;
-
-  for (var i=0; i<repos.length; i++)  {
-    repo  = repos[i];
-    $row  = $("<tr>");
-    $cell = $("<td>");
-    $cell.append("<i class='icon icon-star'></i>")
-    $cell.append(repo.owner + " / " + repoLink(repo.owner, repo.name))
-    $row.append($cell);
-    $tbody.append($row);
-  }
+    for (var i=0; i<repos.length; i++)  {
+      repo  = repos[i];
+      $row  = $("<tr>");
+      $cell = $("<td>");
+      $cell.append("<i class='icon icon-star'></i>")
+      $cell.append(repo.owner + " / " + repoLink(repo.owner, repo.name))
+      $row.append($cell);
+      $tbody.append($row);
+    }
+  });
 }
 
 
@@ -228,13 +229,23 @@ Geocodr.animateUserDrawer = function(opts) {
 
 // Fill in all modules for a user
 Geocodr.renderUserStats = function(self, other) {
+  // User photos
   $('.user-photo.you').css('background', "url('"+self.photo+"')");
   $('.user-photo.them').css('background', "url('"+other.photo+"')");
 
-  Geocodr.fillLangSummary(self, other)
-  Geocodr.drawLangPiechart('.chart-you');
-  Geocodr.drawLangPiechart('.chart-them');
+  // Language breakdown
+  // FUK U FUTURES Y U NO EXIST
+  $.getJSON(Geocodr.langsRoute+self.username, function(selfLangs) {
 
+    $.getJSON(Geocodr.langsRoute+other.username, function(otherLangs) {
+      Geocodr.fillLangSummary(self, other, selfLangs, otherLangs)
+
+      Geocodr.drawLangPiechart('.chart-you', selfLangs);
+      Geocodr.drawLangPiechart('.chart-them', otherLangs);
+    });
+  });
+
+  // Common stars
   Geocodr.fillStarsTable(self, other);
 
   Geocodr.showUserDrawer();
@@ -247,8 +258,12 @@ $(function() {
     Geocodr.hideUserDrawer();
     return false;
   });
+});
 
-})
+
+
+
+
 
 window.go = function() {
   Geocodr.showUserPage({
@@ -257,12 +272,8 @@ window.go = function() {
       photo: "https://0.gravatar.com/avatar/eedc3687a5e76c282e43508e29cd67b7?d=https%3A%2F%2Fidenticons.github.com%2F2cd91248fe0d57b51dc83ffbe5782325.png&s=440",
     },
     'other': {
-      username: "roeschinc",
+      username: "jroesch",
       photo: "https://1.gravatar.com/avatar/41b3f81fe12349bcfa70eff20eaeb187?d=https%3A%2F%2Fidenticons.github.com%2Fa1e0a41acabf07a7b060cfab2e882e16.png&s=440"
     }
   });
 }
-
-//$(function() {
-  //setTimeout(go, 1000);
-//})

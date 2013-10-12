@@ -89,7 +89,7 @@
 
   .charts-container {
     @include clearfix;
-    margin: 50px auto 80px;
+    margin: 50px auto 200px;
     width: 650px;
   }
 
@@ -114,6 +114,19 @@
       margin-top: 2px;
       margin-right: 10px;
     }
+
+    .percent {
+      display: inline-block;
+      font-size: 0.9em;
+      margin-left: 10px;
+      color: lighten($text-color, 25);
+    }
+  }
+
+  .ellipses {
+    color: lighten($text-color, 25);
+    font-size: 1.1em;
+    text-align: center;
   }
 
   .chart-you  { float: left; }
