@@ -1,24 +1,35 @@
+.users-page-container {}
+
 .users-container {
   background-color: white;
   border-left: 1px solid $border-color;
   border-right: 1px solid $border-color;
   width: 75%;
-  margin: 0 auto;
+
+  position: absolute;
+  top: 0;
+  left: 100%;
 }
 
 .panel {
   padding: 40px 0 80px;
-  //outline: 1px solid green;
   border-bottom: 1px solid darken($border-color, 5);
+  text-align: center;
+
+  p {
+    font-size: 1.3em;
+    margin-bottom: 40px;
+    text-align: center;
+  }
+
 }
 
 .panel-icon {
-  //outline: 1px solid red;
   display: block;
   color: silver; // #c0c0c0
-  font-size: 4.9em;
+  font-size: 4.1em;
   text-align: center;
-  margin-bottom: 50px;
+  margin-bottom: 40px;
 }
 
 .panel-photos {
@@ -31,16 +42,15 @@
     width: $photo-container-width;
   }
 
-
   .user, .link { float: left; }
 
   .user {
     width: $user-photo-size;
 
     p {
+      font-family: $textFontFamily;
       font-size: 1.4em;
       margin-top: 20px;
-      text-align: center;
     }
   }
 
@@ -63,6 +73,38 @@
 
 .panel-langs {
 
+  .charts-container {
+    @include clearfix;
+    margin: 50px auto 80px;
+    width: 650px;
+  }
+
+  .chart {
+    @include clearfix;
+    @include dimensions(175px);
+  }
+
+  .legend {
+    margin-top: 20px;
+
+    li {
+      font-size: 1.1em;
+      margin-bottom: 15px;
+      text-align: left;
+    }
+
+    .swatch {
+      @include dimensions(20px);
+      display: inline-block;
+      float: left;
+      margin-top: 2px;
+      margin-right: 10px;
+    }
+  }
+
+  .chart-you  { float: left; }
+  .chart-them { float: right; }
+
 }
 
 .panel-stars {
@@ -70,5 +112,9 @@
 }
 
 .panel-follow {
+  padding: 100px 0;
 
+  .btn-follow-cta {
+    margin-top: 30px;
+  }
 }

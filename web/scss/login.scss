@@ -1,3 +1,14 @@
+.login-page-container {
+  @include clearfix;
+  margin-left: 100px;
+  top: 50px;
+}
+
+.login-container {
+  @include clearfix;
+  width: 75%;
+}
+
 .cta-container, .username-container {
   @include border-box;
   float: left;
@@ -34,6 +45,8 @@
   }
 
   input[type="submit"] {
+    padding-left: 0;
+    padding-right: 0;
     width: 17%;
   }
 }

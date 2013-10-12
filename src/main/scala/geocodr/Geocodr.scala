@@ -10,16 +10,21 @@ import ExecutionContext.Implicits.global
 
 object HelloPlan extends unfiltered.filter.Plan {
   def intent = {
-    case req @ (GET(Path("/login")) | GET(Path("/"))) =>
-      Ok ~> Scalate(req, "login.ssp")
+    case req @ (GET(Path("/app")) | GET(Path("/"))) =>
+      Ok ~> Scalate(req, "app.mustache")
 
-    case req @ (GET(Path("/geo"))) =>
-      Ok ~> Scalate(req, "geo.ssp")
+    case req @ (GET(Path("/graph"))) =>
+      Ok ~> Scalate(req, "graph.mustache")
 
-    case req @ (GET(Path(Seg("users" :: username :: Nil)))) =>
-      Ok ~> Scalate(req, "user.ssp", "username" -> username)
+    // GET /users?username=<name>
+    case req @ (GET(Path("/users"))) =>
+      req match {
+        case Params(params) =>
+          Ok ~> Scalate(req, "user.mustache", "username" -> params("username"))
+      }
 
-    case req => throw new Exception(req.toString())
+    case req @ (GET(_)) =>
+      Ok ~> Scalate(req, "404.mustache")
   }
 }
 
@@ -32,4 +37,3 @@ object Geocodr {
     server.run()
   }
 }
-
