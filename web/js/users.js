@@ -9,11 +9,65 @@ var data = [
   }
 ];
 
-// Lang intersection
+// Lang intersection summary
 // ------------------------------------
-Geocodr.fillLangSummary = function(self, other) {
-  $('.lang-summary').text("comparing " + self.username + " and " + other.username)
+// Intersection of two arrays
+function intersection(a, b) {
+  var ai=0, bi=0, result = new Array();
+
+  while ( ai < a.length && bi < b.length ) {
+    if      (a[ai] < b[bi] ){ ai++; }
+    else if (a[ai] > b[bi] ){ bi++; }
+    else { // they're equal
+      result.push(a[ai]);
+      ai++; bi++;
+    }
+  }
+  return result;
 }
+
+// Like Rails #to_sentence. Joins an array of language strings, eg.
+// 'ruby, python, and 2 others' or 'ruby and python'
+function langClause(commonLangs) {
+  var commonLen = commonLangs.length,
+      clause;
+
+  if (commonLen >= 3) {
+    // Ruby, Python, and 2 others
+    clause = commonLangs.slice(0,2).join(', ') + ", and " + commonLangs.slice(2).length + " other languages";
+  } else if (commonLen === 2) {
+    // Ruby and Python
+    clause = commonLangs.join(' and ');
+  } else if (commonLen === 1) {
+    // Ruby
+    clause = commonLangs[0];
+  } else {
+    clause = '';
+  }
+
+  return clause;
+}
+
+Geocodr.fillLangSummary = function(self, other) {
+  // TODO: FUK U FUTURES Y U NO EXIST
+  $.getJSON('/users/lang?username='+self.username, function(selfData) {
+    $.getJSON('/users/lang?username='+other.username, function(otherData) {
+      var commonLangs = intersection(selfData.langs, otherData.langs),
+          clause      = langClause(commonLangs),
+          text        = self.username + ' and ' + other.username;
+
+      if (clause === '') {
+        console.log("no common langs? that's hopefully wrong");
+        text += " don't write any of the same languages!";
+      } else {
+        text += ' both write ' + clause + '.';
+      }
+
+      $('.lang-summary').text(text);
+    });
+  });
+}
+
 
 // Lang pie charts
 // ------------------------------------
