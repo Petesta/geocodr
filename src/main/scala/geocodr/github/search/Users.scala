@@ -102,7 +102,8 @@ object Users {
 
   def search(sq: CompoundQuery[UserSearchQuery], s: UsersSearchSort, o: Order)/*: Future[UserSearch]*/ = {
     val url = root / "search" / "users"
-    val params = Map("q" -> sq.query)//, "sort" -> s.sort, "order" -> o.order)
+    val params = Map("q" -> sq.query, "sort" -> s.sort, "order" -> o.order, "username" -> System.getenv("GITUSER"), "password" ->
+      System.getenv("GITPASS"))
     val future = Http(url <:< Seq("Accept" -> "application/vnd.github.preview") <<? params OK as.String)
     for {
       result <- future
