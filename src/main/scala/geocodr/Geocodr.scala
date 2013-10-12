@@ -47,7 +47,7 @@ object ServerPlan extends unfiltered.filter.Plan {
         languages <- user.map(_.languages).getOrElse(Future.successful { Map.empty })
       } yield languages
       Ok ~> ResponseString(Await.result(langs, 10 seconds).map {
-        case (k, v) => s"""{ langauge: "$k", percent: $v }"""
+        case (k, v) => s"""{ "langauge": "$k", "percent": $v }"""
       }.mkString( "[", "," , "]"))
 
 
