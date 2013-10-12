@@ -102,14 +102,11 @@ object Users {
 
     def repositories = ???
 
-    def user: Future[User] = {
+    def user = {
       val url = root / "users" / login
       for {
        rawJson <- Http(url OK as.String)
-      } yield rawJson.decodeOption[User] match {
-        case None => ???
-        case Some(v) => v
-      }
+      } yield rawJson.decodeOption[User]
     }
   }
   def search(sq: CompoundQuery[UserSearchQuery], s: UsersSearchSort, o: Order)/*: Future[UserSearch]*/ = {

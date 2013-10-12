@@ -39,7 +39,7 @@ object ServerPlan extends unfiltered.filter.Plan {
             userSearch.user onComplete {
             case Failure(f) => ???
             case Success(user) =>
-              user.info
+              user.get.info
             }
         }
       }
