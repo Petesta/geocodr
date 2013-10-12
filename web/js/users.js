@@ -250,6 +250,9 @@ Geocodr.renderUserStats = function(self, other) {
   $('.user-photo.you').css('background', "url('"+self.photo+"')");
   $('.user-photo.them').css('background', "url('"+other.photo+"')");
 
+  $('.username-you').text(self.username);
+  $('.username-them').text(other.username);
+
   // Language breakdown
   // FUK U FUTURES Y U NO EXIST
   $.getJSON(Geocodr.langsRoute+self.username, function(selfLangs) {
