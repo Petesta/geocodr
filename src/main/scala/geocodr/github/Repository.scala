@@ -137,7 +137,6 @@ object repository {
     owner: UserSearch,
     name: String,           // "name": "bert",
     fullName: String,       // "full_name": "mojombo/bert"
-    description: String,
     priv: Boolean,          // "private": false,
     htmlUrl: String,// "html_url": "https://github.com/mojombo/bert",
     description: String, // "description": "BERT (Binary ERlang Term) serialization library for Ruby."
