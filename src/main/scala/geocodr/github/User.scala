@@ -4,6 +4,14 @@ import dispatch._
 import Defaults._
 import argonaut._
 import Argonaut._
+import geocodr.github.search._
+import scalaz._
+import scalaz.syntax.traverse._
+import scalaz.std.list._
+import scalaz.std.option._
+import scala.concurrent.{ Future => _, _ }
+import scala.concurrent.duration._
+import scala.Exception
 
 object user {
   implicit def EncodeUserListJson: EncodeJson[List[User]] =
@@ -35,7 +43,19 @@ object user {
     createdAt: String,
     accountType: String
   ) {
-    def info = UserInfo(login, avatarUrl, location, Nil)
+
+    def info: UserInfo = UserInfo(login, avatarUrl, location, Await.result(localUsers, 2 seconds))
+
+    def localUsers = for {
+      query <- Users.search(Location(location.getOrElse("San Francisco")), Users.SortedByFollowers, Desc)
+      queries <- query match {
+        case None => ???
+        case Some(qs) =>
+          Future.sequence(qs.map(_.user))
+      }
+    } yield queries.sequence.getOrElse(Nil)
+
+    def repositories = ???
   }
 
   implicit def UserCodecJson =

@@ -92,16 +92,6 @@ object Users {
       score: Double
    ) {
 
-    def langaugesUsed(login: String) = {
-      val query = search(QueryText(login), SortedByFollowers, Asc)
-      /*for {
-        userSearch <- query
-        repoSearch <- Repositories.userRepos(userSearch.repos)
-      } yield repoSearch */
-    }
-
-    def repositories = ???
-
     def user = {
       val url = root / "users" / login
       for {
@@ -109,6 +99,7 @@ object Users {
       } yield rawJson.decodeOption[User]
     }
   }
+
   def search(sq: CompoundQuery[UserSearchQuery], s: UsersSearchSort, o: Order)/*: Future[UserSearch]*/ = {
     val url = root / "search" / "users"
     val params = Map("q" -> sq.query)//, "sort" -> s.sort, "order" -> o.order)
