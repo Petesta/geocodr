@@ -2,8 +2,19 @@ Geocodr.langsRoute = '/users/languages/' // + username
 Geocodr.starsRoute = '/users/starred/'   // + user1/user2
 
 
+
+
+
+
 // Lang intersection summary
 // ------------------------------------
+// Sort an array of language objects to remove those
+// with empty titles and then sort by percent desc
+function filterAndSort(langs) {
+  return langs.filter(function(e) { return e.language })
+              .sort(function(a,b) { return b.percent - a.percent })
+}
+
 // Intersection of two arrays
 function intersection(a, b) {
   var ai=0, bi=0, result = new Array();
@@ -11,7 +22,7 @@ function intersection(a, b) {
   while ( ai < a.length && bi < b.length ) {
     if      (a[ai] < b[bi] ){ ai++; }
     else if (a[ai] > b[bi] ){ bi++; }
-    else { // they're equal
+    else {
       result.push(a[ai]);
       ai++; bi++;
     }
@@ -22,17 +33,15 @@ function intersection(a, b) {
 // Like Rails #to_sentence. Joins an array of language strings, eg.
 // 'ruby, python, and 2 others' or 'ruby and python'
 function langClause(commonLangs) {
-  commonLangs = commonLangs.filter(function(e) { return e.language })
-        .sort(function(a,b) { return b.percent - a.percent })
-        .map(function(e) { return e.language; });
+  commonLangs = filterAndSort(commonLangs).map(function(e) { return e.language; });
 
   var commonLen = commonLangs.length,
       clause;
 
-  if (commonLen >= 3) {
+  if (commonLen >= 4) {
     // Ruby, Python, and 2 others
-    clause = commonLangs.slice(0,2).join(', ') + ", and " + commonLangs.slice(2).length + " other languages";
-  } else if (commonLen === 2) {
+    clause = commonLangs.slice(0,3).join(', ') + ", and " + commonLangs.slice(3).length + " other languages";
+  } else if (commonLen === 3 || commonLen === 2) {
     // Ruby and Python
     clause = commonLangs.join(' and ');
   } else if (commonLen === 1) {
@@ -74,8 +83,7 @@ Geocodr.drawLangPiechart = function(selector, langData) {
   //   }
   // ];
 
-  langData = langData.filter(function(e) { return e.language; }); // Remove empty langs
-  langData = langData.sort(function(a,b) { return b.percent - a.percent }); // Sort by percent desc
+  langData = filterAndSort(langData);
 
   // Dimensions
   var w = h = $('.chart').outerWidth(); // Delegate width to CSS
@@ -160,10 +168,10 @@ Geocodr.fillStarsTable = function(self, other) {
 
   var $tbody = $('.starred-repos tbody')
   // var repos  = [
-  //   { owner: "andrewberls", name: "regularity" },
-  //   { owner: "jroesch", name: "tweak" },
-  //   { owner: "andrewberls", name: "kona" },
-  //   { owner: "petesta", name: "geocodr" },
+  //   { full_name: "andrewberls/regularity" },
+  //   { full_name: "jroesch/tweak" },
+  //   { full_name: "andrewberls/kona" },
+  //   { full_name: "petesta/geocodr" },
   // ]
 
   $.getJSON(Geocodr.starsRoute+self.username+"/"+other.username, function(repos) {
