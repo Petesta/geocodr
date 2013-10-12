@@ -48,3 +48,8 @@
   font-size: $font_size;
   font-weight: bold;
 }
+
+@mixin dimensions($size) {
+  width: $size;
+  height: $size;
+}

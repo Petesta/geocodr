@@ -41,8 +41,21 @@
       <p>You and Tom both write Ruby.</p>
 
       <div class="charts-container">
-        <div class="chart"></div>
-        <div class="chart"></div>
+        <div class="chart chart-you">
+          <svg></svg>
+
+          <ul class="legend">
+            <!--<li><span class="swatch" style="background-color: red;"></span> Ruby</li>-->
+          </ul>
+        </div>
+
+        <div class="chart chart-them">
+          <svg></svg>
+
+          <ul class="legend">
+            <!--<li><span class="swatch" style="background-color: purple;"></span> PHP</li>-->
+          </ul>
+        </div>
       </div>
 
     </section>
@@ -59,13 +72,16 @@
 
 
     <section class="panel panel-follow">
-      <h2>Follow Tom</h2>
+      <h2>Get connected with Tom</h2>
 
-      <a class="btn btn-large btn-blue btn-follow-cta" href="#">Follow Tom</a>
+      <a class="btn btn-large btn-blue btn-follow-cta" href="#">Follow Tom on GitHub</a>
     </section>
 
   </div><!-- .users-container -->
 
 
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  <script type="text/javascript" src="/assets/js/d3.v3.min.js"></script>
+  <script type="text/javascript" src="/assets/js/users.js"></script>
 </body>
 </html>
