@@ -10,6 +10,7 @@ import scalaz.std.option._
 import scalaz.syntax.traverse._
 import argonaut._
 import Argonaut._
+import geocodr.github.user._
 
 object Users {
   case class RepositoryCount(sc: Constraint[Int]) extends UserSearchQuery {
@@ -100,6 +101,16 @@ object Users {
     }
 
     def repositories = ???
+
+    def user /*: Future[Option[User]] */ = {
+      val url = root / "users" / login
+      for {
+       rawJson <- Http(url OK as.String)
+      } yield rawJson.decodeOption[User] match {
+        case None => ???
+        case Some(v) => v
+      }
+    }
   }
   def search(sq: CompoundQuery[UserSearchQuery], s: UsersSearchSort, o: Order)/*: Future[UserSearch]*/ = {
     val url = root / "search" / "users"
