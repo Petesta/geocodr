@@ -1,5 +1,3 @@
-//var data = json.stats;
-
 var data = [
   {
     name: 'ruby',
@@ -11,6 +9,9 @@ var data = [
   }
 ];
 
+
+// Lang pie charts
+// ------------------------------------
 function drawLangPiechart(selector) {
   // Dimensions
   var w = h = $('.chart').outerWidth(); // Delegate width to CSS
@@ -70,16 +71,32 @@ function drawLangPiechart(selector) {
 
 }
 
+// Drawer animation
+// ------------------------------------
+var drawerTransitionTime = 500; // ms
+
+function showDrawer() {
+  animateDrawer({
+    position: 'relative',
+    left: ($(window).outerWidth() - $('.users-container').outerWidth()) / 2
+  });
+}
+
+function hideDrawer() {
+  animateDrawer({
+    position: 'absolute',
+    left: '100%'
+  });
+}
+
+function animateDrawer(opts) {
+  $('.users-container').animate(opts, drawerTransitionTime);
+}
+
+
+
 $(function() {
   drawLangPiechart('.chart-you');
   drawLangPiechart('.chart-them');
 });
 
-
-//window.go = function() {
-  //$('.users-container').animate({
-    //position: 'relative',
-    //left: 0,
-    //margin: '0 auto'
-  //}, 1000)
-//}

@@ -7,9 +7,6 @@
 </head>
 <body class="noise">
 
-  <%@ var username: String %>
-  <!--<h1>Hello ${username}</h1>-->
-
   <div class="users-container">
 
     <section class="panel panel-photos">
@@ -72,7 +69,7 @@
 
 
     <section class="panel panel-follow">
-      <h2>Get connected with Tom</h2>
+      <h2>Get connected with Tom.</h2>
 
       <a class="btn btn-large btn-blue btn-follow-cta" href="#">Follow Tom on GitHub</a>
     </section>
