@@ -9,6 +9,7 @@ var data = [
   }
 ];
 
+
 // Lang intersection summary
 // ------------------------------------
 // Intersection of two arrays
@@ -69,6 +70,7 @@ Geocodr.fillLangSummary = function(self, other) {
 }
 
 
+
 // Lang pie charts
 // ------------------------------------
 Geocodr.drawLangPiechart = function(selector) {
@@ -127,8 +129,57 @@ Geocodr.drawLangPiechart = function(selector) {
     .enter()
     .append('li')
     .html(function(d, i) { return swatchFor(d,i); })
-
 }
+
+
+
+// Starred repos table
+// ------------------------------------
+Geocodr.fillStarsTable = function(self, other) {
+  function repoLink(owner, name) {
+    return "<a href='http://www.github.com/"+owner+"/"+name+"'>"+name+"</a>";
+  }
+
+  var $tbody = $('.starred-repos tbody')
+  // $.getJSON('/users/repos?username='+other.username, function(data) {
+  //   var repos = data.repos;
+  //   $('.common-repo-count').text("You and " + other.username + " have " + repos.length + " starred repos in common.");
+
+  //   var $row, $cell, repo;
+
+  //   for (var i=0; i<repos.length; i++)  {
+  //     repo  = repos[i];
+  //     $row  = $("<tr>");
+  //     $cell = $("<td>");
+  //     $cell.append("<i class='icon icon-star'></i>")
+  //     $cell.append(repo.owner + " / " + repoLink(repo.owner, repo.name))
+  //     $row.append($cell);
+  //     $tbody.append($row);
+  //   }
+  // });
+
+  var repos  = [
+    { owner: "andrewberls", name: "regularity" },
+    { owner: "jroesch", name: "tweak" },
+    { owner: "andrewberls", name: "kona" },
+    { owner: "petesta", name: "geocodr" },
+    ]
+
+  $('.common-repo-count').text("You and " + other.username + " have " + repos.length + " starred repos in common.");
+
+  var $row, $cell, repo;
+
+  for (var i=0; i<repos.length; i++)  {
+    repo  = repos[i];
+    $row  = $("<tr>");
+    $cell = $("<td>");
+    $cell.append("<i class='icon icon-star'></i>")
+    $cell.append(repo.owner + " / " + repoLink(repo.owner, repo.name))
+    $row.append($cell);
+    $tbody.append($row);
+  }
+}
+
 
 // Drawer animation
 // ------------------------------------
@@ -177,6 +228,8 @@ Geocodr.renderUserStats = function(self, other) {
   Geocodr.fillLangSummary(self, other)
   Geocodr.drawLangPiechart('.chart-you');
   Geocodr.drawLangPiechart('.chart-them');
+
+  Geocodr.fillStarsTable(self, other);
 
   Geocodr.showUserDrawer();
 }
