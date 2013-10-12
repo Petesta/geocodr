@@ -9,11 +9,11 @@ import scala.concurrent._
 import ExecutionContext.Implicits.global
 
 object HelloPlan extends unfiltered.filter.Plan {
-  val response =
-
   def intent = {
     case req @ (GET(Path("/login")) | GET(Path("/"))) =>
       Ok ~> Scalate(req, "login.ssp")
+    case req @ (GET(Path("/geo")) | GET(Path("/"))) =>
+      Ok ~> Scalate(req, "geo.ssp")
     case req @ GET(_) => Ok ~> Scalate(req, "helloWorld.ssp")
   }
 }
