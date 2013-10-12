@@ -161,26 +161,34 @@ Geocodr.initGraph = function(username) {
           .attr("y2", function(d) { return d.target.y; });
   }
 
+
+
+
   restart();
   force.stop();
   loadingAnim();
 
+  // Load user as fixed self node
   $.getJSON("/assets/js/initialResponse.json", function(data) {
     nodes[0].name = data.name;
-    nodes[0].img = data.gravatar_url;
+    nodes[0].img  = data.gravatar_url;
     restart();
   });
 
+  // Load user graph
+  var loadingDelay = 1000; // ms
+
   setTimeout(function(){
-  $.getJSON("/assets/js/response.json.js", function(data) {
-    data.users.forEach(function(n) {
-      var r = Math.random() * 2 * Math.PI;
-      n.x = imgWidth/2 + Math.cos(r) * 100;
-      n.y = imgHeight/2 + Math.sin(r) * 100;
-      n.img = n.gravtar_url;
+    $.getJSON("/assets/js/response.json.js", function(data) {
+      data.users.forEach(function(n) {
+        var r = Math.random() * 2 * Math.PI;
+        n.x = imgWidth/2 + Math.cos(r) * 100;
+        n.y = imgHeight/2 + Math.sin(r) * 100;
+        n.img = n.gravtar_url;
+      });
+      nodes = nodes.concat(data.users);
+      endLoading();
     });
-    nodes = nodes.concat(data.users);
-    endLoading();
-  })}, 1000);
+  }, loadingDelay);
 
 };
