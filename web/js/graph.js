@@ -1,4 +1,4 @@
-Geocodr.initGraph = function(user_name) {
+Geocodr.initGraph = function(username) {
   var svg = d3.select(".graph-container svg")
 
   var $svg   = $('.graph-container svg'),
@@ -15,45 +15,17 @@ Geocodr.initGraph = function(user_name) {
     {
       index: 0,
       img:   "/assets/images/default.png",
-      name:  user_name,
+      name:  username,
+      login:  username,
       fixed: true,
       x: width/2,
       y: height/2
     },
   ]
 
-  var nodes2 = [
-    {
-      index: 1,
-      img:   "pete.png",
-      name:  "Pete",
-      x: width/2,
-      y: height/2
-    },
-    {
-      index: 2,
-      img:   "jared.png",
-      name:  "Jared",
-      x: width/2,
-      y: height/2
-    },
-    {
-      index: 3,
-      img:   "andrew.png",
-      name:  "Andrew",
-      x: width/2,
-      y: height/2
-    }
-  ]
 
 
 
-
-  nodes2.forEach(function(n) {
-    var r = Math.random() * 2 * Math.PI;
-    n.x += Math.cos(r) * 10;
-    n.y += Math.sin(r) * 10;
-  });
 
   var loading = true,
       numLoading = 20;
@@ -139,8 +111,23 @@ Geocodr.initGraph = function(user_name) {
     node.exit().remove();
 
     node.enter().insert("g", "g.node")
-        .attr("class", "node")
-        .attr("transform", function(d) { return "translate(" + d.x/2 + "," + d.y/2 + ")"; });
+        .attr("class", function(d) { return d.fixed ? "node node-self" : "node" })
+        .attr("transform", function(d) { return "translate(" + d.x/2 + "," + d.y/2 + ")"; })
+        .attr("desc", function(d) { return d.login; })
+        .on("click", function() {
+          // TODO: hasClass isn't working here? WTF
+          if ($(this).attr("class").indexOf("node-self") > -1) return false;
+
+          selfphoto  = $('.node-self').find("image").last().attr("href")
+          otherphoto = $(this).find("image").attr("href");
+          username   = $(this).attr("desc");
+
+          Geocodr.showUserPage({
+            username: username,
+            selfphoto: selfphoto,
+            otherphoto: otherphoto
+          });
+        });
 
     node.append("image")
           .attr("class", "profile-picture")

@@ -32,3 +32,6 @@
 .graph-link {
   stroke: #aaa;
 }
+
+.node:hover      { cursor: pointer; }
+.node-self:hover { cursor: auto; }
