@@ -129,6 +129,12 @@ Geocodr.initGraph = function(username) {
               username: $(this).attr('desc')
             }
           });
+        })
+        .on("mouseover", function() {
+          var r = Math.random() * Math.PI * 2;
+          d3.select(this)
+            .attr("x", function(d) { d.x += Math.cos(r) * 5 })
+            .attr("y", function(d) { d.y += Math.sin(r) * 5 })
         });
 
     n.append("image")
