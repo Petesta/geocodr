@@ -138,11 +138,11 @@ Geocodr.initGraph = function(user_name) {
     node = node.data(nodes);
     node.exit().remove();
 
-    node.enter().insert("g", "g.node")
+    var n = node.enter().insert("g", "g.node")
         .attr("class", "node")
         .attr("transform", function(d) { return "translate(" + d.x/2 + "," + d.y/2 + ")"; });
 
-    node.append("image")
+    n.append("image")
           .attr("class", "profile-picture")
           .attr("x", - imgWidth/2)
           .attr("y", - imgHeight/2)
@@ -151,13 +151,13 @@ Geocodr.initGraph = function(user_name) {
           .attr("height", imgHeight)
           .attr("clip-path", "url(#clip)")
 
-    node.append("circle")
+    n.append("circle")
           .attr("x", - imgWidth/2)
           .attr("y", - imgHeight/2)
           .attr("r", imgHeight/2)
           .attr("class", "graph-circle")
 
-    node.append("text")
+    n.append("text")
         .text(function(d) { return d.name; })
         .attr("x", 0)
         .attr("y", imgHeight/2 + 15)
@@ -181,6 +181,8 @@ Geocodr.initGraph = function(user_name) {
   $.getJSON("/assets/js/initialResponse.json", function(data) {
     nodes[0].name = data.name;
     nodes[0].img = data.gravatar_url;
+    $("node-disabled").find("img").attr("href", data.gravatar_url);
+    $("node-disabled").find("text").contents(data.name);
     restart();
   });
 
