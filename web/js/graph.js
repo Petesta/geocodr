@@ -1,12 +1,11 @@
 Geocodr.initGraph = function() {
-  var svgIdent = ".graph-container svg";
   var svg = d3.select(".graph-container svg")
 
-  var width  = $(svgIdent).width(),
-      height = $(svgIdent).height();
+  var $svg   = $('.graph-container svg'),
+       width = $svg.width(),
+      height = $svg.height();
 
-  var imgWidth  = 100,
-      imgHeight = 100;
+  var imgWidth = imgHeight = 100;
 
   var numNodes = 10;
 
@@ -22,9 +21,8 @@ Geocodr.initGraph = function() {
       x: width/2,
       y: height/2
     },
-    ]
+  ]
 
-      console.log(nodes)
   var nodes2 = [
     {
       index: 1,
@@ -53,15 +51,14 @@ Geocodr.initGraph = function() {
 
 
   nodes2.forEach(function(n) {
-      var r = Math.random() * 2 * Math.PI;
-      console.log(Math.cos(r));
-      n.x += Math.cos(r) * 10;
-      n.y += Math.sin(r) * 10;
+    var r = Math.random() * 2 * Math.PI;
+    n.x += Math.cos(r) * 10;
+    n.y += Math.sin(r) * 10;
   });
 
-  var loading = true;
+  var loading = true,
+      numLoading = 20;
 
-  var numLoading = 20;
   var loadingDots = svg.append("g")
       .attr("transform", "translate(" + width/2 + "," + height/2 + ")")
 
@@ -81,10 +78,10 @@ Geocodr.initGraph = function() {
   function loadingAnim() {
     if (loading) {
       loadingDots.transition()
-            .duration(300)
-            .ease("linear")
-            .attrTween("transform", tween)
-            .each("end", loadingAnim);
+        .duration(300)
+        .ease("linear")
+        .attrTween("transform", tween)
+        .each("end", loadingAnim);
     } else {
       var called = false;
       var first = loadingDots.selectAll("circle")
@@ -107,9 +104,7 @@ Geocodr.initGraph = function() {
     loading = false;
   }
 
-  svg.on("click", function() {
-    endLoading();
-  });
+  svg.on('click', endLoading);
 
   var links, force, link, node;
 
@@ -168,14 +163,7 @@ Geocodr.initGraph = function() {
         .attr("y", imgHeight/2 + 15)
         .attr("text-anchor", "middle")
         .attr("class", "profile-name")
-
   }
-
-
-  // svg.style("opacity", 1e-6)
-  //   .transition()
-  //     .duration(1000)
-  //     .style("opacity", 1);
 
   function tick(e) {
     node.attr("transform", function(d) { return "translate("+d.x+","+d.y+")"; })
@@ -186,18 +174,8 @@ Geocodr.initGraph = function() {
           .attr("y2", function(d) { return d.target.y; });
   }
 
-  // function mousedown() {
-  //   nodes.forEach(function(o, i) {
-  //     o.x += (Math.random() - .5) * 40;
-  //     o.y += (Math.random() - .5) * 40;
-  //   });
-  //   force.resume();
-  // }
-
-
   restart();
   force.stop();
   loadingAnim();
-  endLoading();
-
+  setTimeout(endLoading, 1500);
 };
