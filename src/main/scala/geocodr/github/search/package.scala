@@ -14,13 +14,20 @@ package object search {
   implicit def queryToCompoundQuery[A <: SearchQuery](x: A): CompoundQuery[A] = CompoundQuery(x)
 
   /* A Sequence of Queries */
-  case class CompoundQuery[A <: SearchQuery](queries: A*) {
+  case class CompoundQuery[+A <: SearchQuery](queries: A*) {
     def query = queries.map(_.query).mkString(" ")
-    def +(o: A): CompoundQuery[A] = CompoundQuery(queries :+ o: _*)
+    def +[B >: A <: SearchQuery](o: B): CompoundQuery[B] = CompoundQuery[B]((queries :+ o): _*)
   }
 
   trait UserSearchQuery extends SearchQuery
   trait RepositorySearchQuery extends SearchQuery
+  
+  /* Support text as a SearchQuery */
+  case class QueryText(name: String) extends SearchQuery with UserSearchQuery with RepositorySearchQuery {
+    def query = name
+  }
+
+  implicit def stringToText(s: String) = QueryText(s)
   
   /* Common Queries Here */
   case class SearchIn(text: String, fields: List[String]) extends RepositorySearchQuery {
