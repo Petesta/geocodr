@@ -17,46 +17,49 @@ function filterAndSort(langs) {
 
 // Intersection of two arrays
 function intersection(a, b) {
-  var ai=0, bi=0, result = new Array();
+  a = filterAndSort(a).map(function(e) { return e.language })
+  b = filterAndSort(b).map(function(e) { return e.language })
 
-  while ( ai < a.length && bi < b.length ) {
-    if      (a[ai] < b[bi] ){ ai++; }
-    else if (a[ai] > b[bi] ){ bi++; }
-    else {
-      result.push(a[ai]);
-      ai++; bi++;
-    }
-  }
-  return result;
+  return a.filter(function(e) { return b.indexOf(e) != -1; })
+
+  // TODO: this code doesn't play nice with objects?
+  //var ai=0, bi=0, result = new Array();
+
+  //while ( ai < a.length && bi < b.length ) {
+    //if      (a[ai] < b[bi] ){ ai++; }
+    //else if (a[ai] > b[bi] ){ bi++; }
+    //else {
+      //result.push(a[ai]);
+      //ai++; bi++;
+    //}
+  //}
+  //return result;
 }
 
 // Like Rails #to_sentence. Joins an array of language strings, eg.
 // 'ruby, python, and 2 others' or 'ruby and python'
 function langClause(commonLangs) {
-  commonLangs = filterAndSort(commonLangs).map(function(e) { return e.language; });
-
   var commonLen = commonLangs.length,
-      clause;
+      clause = '';
 
   if (commonLen >= 4) {
     // Ruby, Python, and 2 others
-    clause = commonLangs.slice(0,3).join(', ') + ", and " + commonLangs.slice(3).length + " other languages";
+    var rest = commonLangs.slice(3);
+    clause = commonLangs.slice(0,3).join(', ') + ", and " + (rest.length === 1 ? " 1 other language" : rest.length + " other languages");
   } else if (commonLen === 3 || commonLen === 2) {
     // Ruby and Python
     clause = commonLangs.join(' and ');
   } else if (commonLen === 1) {
     // Ruby
     clause = commonLangs[0];
-  } else {
-    clause = '';
   }
 
   return clause;
 }
 
 Geocodr.fillLangSummary = function(self, other, selfLangs, otherLangs) {
-      var clause = langClause(intersection(selfLangs, otherLangs)),
-          text   = self.username + ' and ' + other.username;
+  var clause = langClause(intersection(selfLangs, otherLangs)),
+      text   = self.username + ' and ' + other.username;
 
   if (clause === '') {
     text += " don't write any of the same languages!";
@@ -280,7 +283,7 @@ $(function() {
 window.go = function() {
   Geocodr.showUserPage({
     'self': {
-      username: "andrewberls",
+      username: "jcody",
       photo: "https://0.gravatar.com/avatar/eedc3687a5e76c282e43508e29cd67b7?d=https%3A%2F%2Fidenticons.github.com%2F2cd91248fe0d57b51dc83ffbe5782325.png&s=440",
     },
     'other': {
