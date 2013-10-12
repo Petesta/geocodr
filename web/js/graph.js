@@ -136,8 +136,16 @@ Geocodr.initGraph = function(username) {
         .on("mousemove", function(e) {
           var init = d3.select(this).attr("init");
           d3.select(this)
-            .attr("x", function(d) { d.x += (e.offsetX - init[0]) * .1})
-            .attr("x", function(d) { d.y += (e.offsetY - init[1]) * .1})
+            .attr("x", function(d) { 
+              var x = d.x;
+              d.x += (e.offsetX - init[0]) * .1;
+              return x;
+            })
+            .attr("y", function(d) { 
+              var y = d.y;
+              d.y += (e.offsetY - init[0]) * .1;
+              return y;
+            })
             .attr("init", [e.offsetX, e.offsetY]);
           console.log(d3.select(this).attr("x"));
           force.resume();
