@@ -1,5 +1,5 @@
 Geocodr.langsRoute = '/users/languages/' // + username
-Geocodr.starsRoute = '/users/stars/'     // + username
+Geocodr.starsRoute = '/users/starred/'   // + user1/user2
 
 
 // Lang intersection summary
@@ -166,18 +166,22 @@ Geocodr.fillStarsTable = function(self, other) {
   //   { owner: "petesta", name: "geocodr" },
   // ]
 
-  $.getJSON(Geocodr.starsRoute+other.username, function(data) {
-    var repos = data.repos;
+  $.getJSON(Geocodr.starsRoute+self.username+"/"+other.username, function(repos) {
     $('.common-repo-count').text("You and " + other.username + " have " + repos.length + " starred repos in common.");
+
+    if (repos.length === 0) return;
 
     var $row, $cell, repo;
 
     for (var i=0; i<repos.length; i++)  {
-      repo  = repos[i];
-      $row  = $("<tr>");
-      $cell = $("<td>");
+      repo     = repos[i];
+      segments = repo.full_name.split("/");
+      owner    = segments[0];
+      name     = segments[1];
+      $row     = $("<tr>");
+      $cell    = $("<td>");
       $cell.append("<i class='icon icon-star'></i>")
-      $cell.append(repo.owner + " / " + repoLink(repo.owner, repo.name))
+      $cell.append(owner + " / " + repoLink(owner, name))
       $row.append($cell);
       $tbody.append($row);
     }

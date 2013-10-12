@@ -143,7 +143,7 @@ Geocodr.initGraph = function(username) {
             })
             .attr("y", function(d) { 
               var y = d.y;
-              d.y += (e.offsetY - init[0]) * .1;
+              d.y += (e.offsetY - init[1]) * .1;
               return y;
             })
             .attr("init", [e.offsetX, e.offsetY]);
