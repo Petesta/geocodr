@@ -121,6 +121,7 @@ function showGraphPage(username) {
       'top': '50px',
     }, slideTime);
 
+    initGraph();
     startGraph();
   });
 }

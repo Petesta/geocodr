@@ -1,11 +1,11 @@
-(function() {
+window.initGraph = function() {
+var svgIdent = ".graph-container svg";
+var svg = d3.select(".graph-container svg")
 
+var width  = $(svgIdent).width(),
+    height = $(svgIdent).height();
 
-
-
-
-var width  = 960,
-    height = 500;
+console.log(height);
 
 var imgWidth  = 100,
     imgHeight = 100;
@@ -25,6 +25,8 @@ var nodes = [
     y: height/2
   },
   ]
+
+    console.log(nodes)
 var nodes2 = [
   {
     index: 1,
@@ -59,7 +61,6 @@ nodes2.forEach(function(n) {
     n.y += Math.sin(r) * 10;
 });
 
-var svg = d3.select(".graph-container svg")
 var loading = true;
 
 var numLoading = 20;
@@ -107,6 +108,8 @@ function endLoading() {
   nodes = nodes.concat(nodes2);
   loading = false;
 }
+
+window.startGraph = endLoading;
 
 
 svg.on("click", function() {
@@ -197,10 +200,8 @@ function tick(e) {
 // }
 
 
-window.startGraph = function() {
-  restart();
-  force.stop();
-  loadingAnim();
-}
+restart();
+force.stop();
+loadingAnim();
 
-})();
+};
