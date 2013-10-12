@@ -144,6 +144,7 @@ Geocodr.initGraph = function(username) {
             .attr("x", function(d) { d.x += (e.offsetX - init[0]) * .1})
             .attr("x", function(d) { d.y += (e.offsetY - init[1]) * .1})
             .attr("init", [e.offsetX, e.offsetY]);
+          force.resume();
         })
         .on("mouseout", function() {
           d3.select(this).attr("init", null);
