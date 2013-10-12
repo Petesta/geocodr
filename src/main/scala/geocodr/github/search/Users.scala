@@ -1,5 +1,7 @@
 package geocodr.github.search
 
+import com.github.nscala_time.time.Imports._
+
 import dispatch._
 import Defaults._
 import scalaz._
@@ -14,8 +16,8 @@ object Users {
     def query = s"repos:${sc.filter}"
   }
 
-  case class Created(date: String) extends UserSearchQuery {
-    def query = s"created:$date"
+  case class Created(date: Constraint[DateTime]) extends UserSearchQuery {
+    def query = s"created:${date.filter}"
   }
 
   case class Followers(sc: Constraint[Int]) extends UserSearchQuery {
