@@ -42,15 +42,15 @@ object Repositories {
     def sort: String
   }
 
-  case object SortByStars extends RepositoriesSearchSort {
+  case object SortedByStars extends RepositoriesSearchSort {
     def sort = "stars"
   }
 
-  case object SortByForks extends RepositoriesSearchSort {
+  case object SortedByForks extends RepositoriesSearchSort {
     def sort = "forks"
   }
 
-  case object SortByUpdated extends RepositoriesSearchSort {
+  case object SortedByUpdated extends RepositoriesSearchSort {
     def sort = "updated"
   }  
 
@@ -58,5 +58,9 @@ object Repositories {
     val url = root / "search" / "repositories"
     val params = Map("q" -> sq.query, "sort" -> s.sort, "order" -> o.order) 
     Http(url <:< Seq("Accept" -> "application/vnd.github.preview") <<? params OK as.String)
+  }
+
+  def userRepos(repositories: Req) = {
+    val result = Http(repositories OK as.String)
   }
 }
