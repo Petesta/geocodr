@@ -1,10 +1,7 @@
-<%@ var username %>
+<%@ var username: String %>
 <h1>user.ssp</h1>
 
 
-
-
-
 <div class="container">
-${username}
+Hello ${username}
 </div>
