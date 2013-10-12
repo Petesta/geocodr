@@ -17,7 +17,7 @@ Geocodr.showGraphPage = function(username) {
       'top': '50px',
     }, slideTime);
 
-    Geocodr.initGraph();
+    Geocodr.initGraph(username);
   });
 }
 
