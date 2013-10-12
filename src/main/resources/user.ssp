@@ -1,30 +1,58 @@
-<%@ var username: String %>
-<h1>Hello ${username}</h1>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width" />
+  <link href="http://fonts.googleapis.com/css?family=Open+Sans:300" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="/assets/fonts/font-awesome/css/font-awesome.css">
+  <link href="/assets/css/application.css" media="screen" type="text/css" rel="stylesheet" />
+</head>
+<body class="noise">
+
+  <%@ var username: String %>
+  <!--<h1>Hello ${username}</h1>-->
+
+  <div class="users-container">
+
+    <section class="panel panel-photos">
+      <i class="icon panel-icon icon-group"></i>
 
 
-<div class="users-container">
+      <div class="user-photos-container">
+        <div class="user">
+          <img class="user-photo" src="" alt="" />
+          <p>You</p>
+        </div>
 
-  <section class="panel panel-photos">
-    <img class="panel-icon" src="/assets/images/glyphicons/glyphicons_000_glass.png" />
-
-  </section>
-
-
-
-  <section class="panel panel-langs">
-
-  </section>
+        <div class="link"></div>
 
 
+        <div class="user">
+          <img class="user-photo" src="" alt="" />
+          <p>Tom Smith</p>
+        </div>
+      </div>
 
-  <section class="panel panel-stars">
-
-  </section>
+    </section>
 
 
 
-  <section class="panel panel-follow">
+    <section class="panel panel-langs">
 
-  </section>
+    </section>
 
-</div><!-- .users-container -->
+
+
+    <section class="panel panel-stars">
+
+    </section>
+
+
+
+    <section class="panel panel-follow">
+
+    </section>
+
+  </div><!-- .users-container -->
+
+
+</body>
+</html>
