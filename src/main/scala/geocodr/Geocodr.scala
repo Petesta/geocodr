@@ -11,13 +11,13 @@ import ExecutionContext.Implicits.global
 object HelloPlan extends unfiltered.filter.Plan {
   def intent = {
     case req @ (GET(Path("/app")) | GET(Path("/"))) =>
-      Ok ~> Scalate(req, "app.ssp")
+      Ok ~> Scalate(req, "app.mustache")
 
     case req @ (GET(Path(Seg("users" :: username :: Nil)))) =>
-      Ok ~> Scalate(req, "user.ssp", "username" -> username)
+      Ok ~> Scalate(req, "user.mustache", "username" -> username)
 
     case req @ (GET(_)) =>
-      Ok ~> Scalate(req, "404.ssp")
+      Ok ~> Scalate(req, "404.mustache")
   }
 }
 
