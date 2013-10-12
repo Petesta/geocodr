@@ -1,17 +1,17 @@
 form {
   @include clearfix;
 
-  label {
-    font-weight: bold;
-    font-size: 1.2em;
-    display: inline-block;
-    margin-bottom: 10px;
-  }
+  //label {
+    //font-weight: bold;
+    //font-size: 1.2em;
+    //display: inline-block;
+    //margin-bottom: 10px;
+  //}
 
   input:not([type="submit"]),
   textarea {
     @include border-box;
-    //@include border-radius(3px);
+    @include border-radius(2px);
     font-size: 1.2em;
     border: 1px solid lighten(#ccc, 8);
     //margin-bottom: 20px;
@@ -19,7 +19,7 @@ form {
     //width: 100%;
 
     &:focus {
-      //border-color: lighten($blue, 15);
+      border-color: lighten($blue, 45);
       outline: none;
     }
 
@@ -34,8 +34,7 @@ form {
 
   input[type="submit"] {
     display: block;
-    //margin: 10px auto;
 
-    @include mobile { margin-bottom: 30px; }
+    //@include mobile { margin-bottom: 30px; }
   }
 }
