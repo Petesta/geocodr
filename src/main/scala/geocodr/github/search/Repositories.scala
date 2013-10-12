@@ -80,7 +80,6 @@ object Repositories {
     }
   }
 
-
   def search(sq: CompoundQuery[RepositoriesSearchQuery], s: RepositoriesSearchSort, o: Order) = {
     val url = root / "search" / "repositories"
     val params = Map("q" -> sq.query, "sort" -> s.sort, "order" -> o.order) 

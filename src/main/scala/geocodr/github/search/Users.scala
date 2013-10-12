@@ -104,6 +104,7 @@ object Users {
     val url = root / "search" / "users"
     val params = Map("q" -> sq.query, "sort" -> s.sort, "order" -> o.order)
     val future = Http(url <:< globalHeaders <<? params OK as.String)
+
     for {
       result <- future
     } yield Parse.parse(result) match {
