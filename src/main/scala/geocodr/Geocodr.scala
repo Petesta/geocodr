@@ -15,6 +15,7 @@ import argonaut._
 import Argonaut._
 import argonaut.integrate.unfiltered._
 
+//case class Error(msg: String)
 object ServerPlan extends unfiltered.filter.Plan {
   def intent = {
     case req @ (GET(Path("/app")) | GET(Path("/"))) =>
@@ -34,9 +35,21 @@ object ServerPlan extends unfiltered.filter.Plan {
       val search = Users.search(QueryText(username), Users.SortedByFollowers, Asc)
       val userInfo = for {
         Some(userSearch) <- search
-        user <- userSearch.head.user
+        user <- userSearch.filter(_.login == username.toLowerCase).head.user
       } yield user.map(_.info(center = true))
       Ok ~> JsonResponse(Await.result(userInfo, 10 seconds).get)
+
+    case req @ GET(Path(Seg("users" :: "languages" :: username :: Nil))) =>
+      val search = Users.search(QueryText(username), Users.SortedByFollowers, Asc)
+      val langs = for {
+        Some(userSearch) <- search
+        user <- userSearch.filter(_.login == username.toLowerCase).head.user
+        languages <- user.map(_.languages).getOrElse(Future.successful { Map.empty })
+      } yield languages
+      Ok ~> ResponseString(Await.result(langs, 10 seconds).map {
+        case (k, v) => s"""{ langauge: "$k", percent: $v }"""
+      }.mkString( "[", "," , "]"))
+
 
     case req @ (GET(_)) =>
       Ok ~> Scalate(req, "404.mustache")

@@ -86,19 +86,6 @@ object Repositories {
     Http(url <:< globalHeaders <<? params OK as.String)
   }
 
-  def listLanguages(sq: CompoundQuery[RepositoriesSearchQuery], s: RepositoriesSearchSort, o: Order) = {
-    val future = search(sq, s, o)
-    for {
-      result <- future
-    } yield Parse.parse(result) match {
-      case -\/(e) => throw new Exception(e)
-      case \/-(json) => 
-        (json -| "items").map(_.array).flatten.map { is =>
-          is.map(x => x.as[RepositorySearch].toEither match { case Left(e) => throw new Exception(e.toString); case Right(v) => v })
-        }
-    }
-  }
-
   def userRepos(repositories: Req) = {
     // val result = Http(repositories OK as.String)
   }

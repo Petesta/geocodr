@@ -5,6 +5,7 @@ import Defaults._
 import argonaut._
 import Argonaut._
 import geocodr.github.search._
+import geocodr.github.repository._
 import scalaz._
 import scalaz.syntax.traverse._
 import scalaz.std.list._
@@ -54,16 +55,35 @@ object user {
       queries <- query match {
         case None => ???
         case Some(qs) =>
-          Future.sequence(qs.take(3).map(_.user))
+          Future.sequence(qs.map(_.user))
       }
     } yield queries.sequence.getOrElse(Nil)
 
-    def repositories = ???
-  }
+    def repositories: Future[List[Repository]] = {
+      val url = root / "users" / login / "repos"
+      for {
+        result <- Http(url <:< globalHeaders OK as.String)
+      } yield Parse.parse(result) match {
+        case -\/(e) => throw new Exception(e)
+        case \/-(json) =>
+          json.array.map { o =>
+            o.map { x => RepositoryCodecJson.Decoder(x.hcursor).toEither match {
+              case Left(e) => throw new Exception(x + "\n" + e._1.toString + e._2.toString)
+              case Right(s) => some(s)
+            }
+          }.sequence
+        }.flatten.getOrElse(Nil)
+      }
+    }
 
-  def languages(repos: List[String]): Map[String, Float] = {
-    val len = repos.length
-    repos.groupBy { x => x }.map { case (k, v) => (k, v.length.toFloat / len) }
+    def languages = for {
+      repos <- repositories
+      len <- Future.successful { repos.length }
+    } yield repos.groupBy { x =>
+      x.language.getOrElse("")
+    }.map {
+      case (k, v) => (k, v.length.toFloat / len)
+    }
   }
 
   implicit def UserCodecJson =

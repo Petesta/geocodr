@@ -14,7 +14,6 @@ object repository {
 
   case class Repository (
     id: Long,
-    owner: UserSearch,
     name: String,
     fullName: String,
     description: Option[String],
@@ -24,18 +23,14 @@ object repository {
     url: String,
     homepage: Option[String],
     watchersCount: Long,
-    language: String,
-    masterBranch: String,
-    defaultBranch: Option[String]
-  ) /*{
-    def info = RepositoryInfo(name, language, watchersCount)
-  }*/
+    language: Option[String]
+  )
 
   implicit def RepositoryCodecJson =
-    casecodec14(Repository.apply, Repository.unapply)("id", "owner", "name", "full_name",
+    casecodec11(Repository.apply, Repository.unapply)("id", "name", "full_name",
                                                       "description", "private", "html_url",
                                                       "fork", "url", "homepage", "watchers_count",
-                                                      "language", "master_branch", "default_branch")
+                                                      "language")
 
   /*
   {
