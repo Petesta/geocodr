@@ -46,7 +46,7 @@ object user {
   ) {
 
     def info(center: Boolean = false): UserInfo = {
-      val nearby = if (!center) { List.empty } else { Await.result(localUsers, 10 seconds) }
+      val nearby = if (!center) { List.empty } else { Await.result(localUsers, 10 seconds).take(10) }
       UserInfo(login, avatarUrl, location, nearby)
     }
 
@@ -73,6 +73,24 @@ object user {
             }
           }.sequence
         }.flatten.getOrElse(Nil)
+      }
+    }
+
+    def starredRepos: Future[List[Repository]] = {
+      val url = root / "users" / login / "starred"
+      val params = Map("sort" -> "stars", "order" -> "desc")
+      for {
+        result <- Http(url <:< globalHeaders <<? params OK as.String)
+      } yield Parse.parse(result) match {
+        case -\/(e) => throw new Exception(e)
+        case \/-(json) =>
+          json.array.map { o =>
+            o.map { x => RepositoryCodecJson.Decoder(x.hcursor).toEither match {
+              case Left(e) => throw new Exception(x + "\n" + e._1.toString + e._2.toString)
+              case Right(s) => some(s)
+            }
+            }.sequence
+          }.flatten.getOrElse(Nil)
       }
     }
 

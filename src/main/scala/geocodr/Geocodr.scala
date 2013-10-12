@@ -11,6 +11,7 @@ import scala.util.{ Try, Success, Failure }
 import ExecutionContext.Implicits.global
 import geocodr.github.search._
 import geocodr.github.user._
+import geocodr.github.repository._
 import argonaut._
 import Argonaut._
 import argonaut.integrate.unfiltered._
@@ -50,20 +51,18 @@ object ServerPlan extends unfiltered.filter.Plan {
         case (k, v) => s"""{ "language": "$k", "percent": $v }"""
       }.mkString( "[", "," , "]"))
 
-    /* case req @ GET(Path(Seg("users" :: "starred" :: uname1 :: uname2 Nil))) =>
+    case req @ GET(Path(Seg("users" :: "starred" :: uname1 :: uname2 :: Nil))) =>
       val search1 = Users.search(QueryText(uname1), Users.SortedByFollowers, Asc)
       val search2 = Users.search(QueryText(uname2), Users.SortedByFollowers, Asc)
-      val langs = for {
+      val repos = for {
         Some(userSearch1) <- search1
-        Some(userSearch1) <- search2
-        user <- userSearch1.filter(_.login == uname1.toLowerCase).head.user
-        languages <- user.map(_.languages).getOrElse(Future.successful { Map.empty })
-      } yield languages
-      Ok ~> ResponseString(Await.result(langs, 10 seconds).map {
-        case (k, v) => s"""{ "langauge": "$k", "percent": $v }"""
-      }.mkString( "[", "," , "]")) */
-
-
+        Some(userSearch2) <- search2
+        Some(user1) <- userSearch1.filter(_.login == uname1.toLowerCase).head.user
+        Some(user2) <- userSearch2.filter(_.login == uname2.toLowerCase).head.user
+        starred1 <- user1.starredRepos
+        starred2 <- user2.starredRepos
+      } yield Repository.intersect(starred1, starred2)
+      Ok ~> JsonResponse(Await.result(repos, 10 seconds).toList)
 
 
     case req @ (GET(_)) =>
