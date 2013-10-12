@@ -85,7 +85,7 @@ Geocodr.initGraph = function(username) {
    force = d3.layout.force()
       .nodes(nodes)
       .links(links)
-      .linkDistance(200)
+      .linkDistance(250)
       .friction(.8)
       .size([width, height])
       .charge(-300)
@@ -108,7 +108,7 @@ Geocodr.initGraph = function(username) {
 
     n = node.enter().insert("g", "g.node")
         .attr("class", function(d) { return d.fixed ? "node node-self" : "node" })
-        .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
+        .attr("transform", function(d) { console.log(d.x);return "translate(" + d.x + "," + d.y + ")"; })
         .attr("desc", function(d) { return d.name; }) // Store username for grabbing later
         .on("click", function() {
           // TODO: hasClass isn't working here? WTF
@@ -142,7 +142,7 @@ Geocodr.initGraph = function(username) {
               d.x += (m[0] - initP[0]) * .1;
               return x;
             })
-            .attr("y", function(d) { 
+            .attr("y", function(d) {
               if(isNaN(d.y)) { d.y = sel.attr(y)}
               var y = d.y;
               d.y += (m[1] - initP[1]) * .1;
@@ -218,8 +218,9 @@ Geocodr.initGraph = function(username) {
     var nearbyUsers = data.nearbyUsers;
     nearbyUsers.forEach(function(n) {
       var r = Math.random() * 2 * Math.PI;
-      n.x = imgWidth/2 + Math.cos(r) * 100;
-      n.y = imgHeight/2 + Math.sin(r) * 100;
+      console.log(imgWidth/2);
+      n.x = width/2 + Math.cos(r) * 10;
+      n.y = height/2 + Math.sin(r) * 10;
       n.img = n.avatarUrl;
     });
     nodes = nodes.concat(nearbyUsers);
