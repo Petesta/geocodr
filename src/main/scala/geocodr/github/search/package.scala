@@ -19,19 +19,28 @@ package object search {
     def +[B >: A <: SearchQuery](o: B): CompoundQuery[B] = CompoundQuery[B]((queries :+ o): _*)
   }
 
+  trait LocationSearchQuery extends SearchQuery
+  trait RepositoriesSearchQuery extends SearchQuery
   trait UserSearchQuery extends SearchQuery
-  trait RepositorySearchQuery extends SearchQuery
   
   /* Support text as a SearchQuery */
-  case class QueryText(name: String) extends SearchQuery with UserSearchQuery with RepositorySearchQuery {
+  case class QueryText(name: String) extends SearchQuery with UserSearchQuery with RepositoriesSearchQuery {
     def query = name
   }
 
   implicit def stringToText(s: String) = QueryText(s)
   
   /* Common Queries Here */
-  case class SearchIn(text: String, fields: List[String]) extends RepositorySearchQuery {
-    def query = s"$text in:${fields.mkString(",")}"
+  case class SearchIn(fields: List[String]) extends UserSearchQuery with RepositoriesSearchQuery {
+    def query = s"in:${fields.mkString(",")}"
+  }
+
+  case class Language(language: String) extends UserSearchQuery with RepositoriesSearchQuery {
+    def query = s"language:${language.map(_.toLower).mkString("")}"
+  }
+
+  case class Location(location: String) extends UserSearchQuery with RepositoriesSearchQuery {
+    def query = s"location:$location"
   }
 
   /* Sizing Constraints */
@@ -62,7 +71,17 @@ package object search {
   case class Range(start: Int, end: Int) extends SizeConstraint {
     def filter = s"$start..$end"
   }
-
+  
+  /* For classes that are constrained by sizes */
+  trait ComparableOps[A] {
+    val constructor: (SizeConstraint) => A
+    def ==(x: Int) = constructor(Eq(x))
+    def <(x: Int)  = constructor(LessThan(x))
+    def <=(x: Int) = constructor(LessThanEq(x))
+    def >(x: Int)  = constructor(GreaterThan(x))
+    def >=(x: Int) = constructor(GreaterThanEq(x))
+    def range(pair: (Int, Int)) = constructor(Range(pair._1, pair._2))
+  }
 
   /* Order */
   sealed trait Order {
