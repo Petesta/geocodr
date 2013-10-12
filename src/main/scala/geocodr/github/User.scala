@@ -15,7 +15,7 @@ import scala.Exception
 
 object user {
   implicit def EncodeUserListJson: EncodeJson[List[User]] =
-    EncodeJson((us: List[User]) => jArray(us.map(u => UserInfoEncodeJson.encode(u.info))))
+    EncodeJson((us: List[User]) => jArray(us.map(u => UserInfoEncodeJson.encode(u.info(false)))))
 
   implicit def UserInfoEncodeJson =
     jencode4L((ui: UserInfo) => (ui.name, ui.avatarUrl, ui.location, ui.nearbyUsers))("name", "avatarUrl", "location", "nearbyUsers")
@@ -44,7 +44,10 @@ object user {
     accountType: String
   ) {
 
-    def info: UserInfo = UserInfo(login, avatarUrl, location, Await.result(localUsers, 100 seconds))
+    def info(center: Boolean = false): UserInfo = {
+      val nearby = if (!center) { List.empty } else { Await.result(localUsers, 10 seconds) }
+      UserInfo(login, avatarUrl, location, nearby)
+    }
 
     def localUsers = for {
       query <- Users.search(Location(location.getOrElse("San Francisco")), Users.SortedByFollowers, Desc)
