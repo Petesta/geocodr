@@ -23,10 +23,6 @@ Geocodr.initGraph = function(username) {
     },
   ]
 
-
-
-
-
   var loading = true,
       numLoading = 20;
 
@@ -110,9 +106,9 @@ Geocodr.initGraph = function(username) {
     node = node.data(nodes);
     node.exit().remove();
 
-    node.enter().insert("g", "g.node")
+    n = node.enter().insert("g", "g.node")
         .attr("class", function(d) { return d.fixed ? "node node-self" : "node" })
-        .attr("transform", function(d) { return "translate(" + d.x/2 + "," + d.y/2 + ")"; })
+        .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
         .attr("desc", function(d) { return d.login; })
         .on("click", function() {
           // TODO: hasClass isn't working here? WTF
@@ -129,7 +125,7 @@ Geocodr.initGraph = function(username) {
           });
         });
 
-    node.append("image")
+    n.append("image")
           .attr("class", "profile-picture")
           .attr("x", - imgWidth/2)
           .attr("y", - imgHeight/2)
@@ -138,13 +134,13 @@ Geocodr.initGraph = function(username) {
           .attr("height", imgHeight)
           .attr("clip-path", "url(#clip)")
 
-    node.append("circle")
+    n.append("circle")
           .attr("x", - imgWidth/2)
           .attr("y", - imgHeight/2)
           .attr("r", imgHeight/2)
           .attr("class", "graph-circle")
 
-    node.append("text")
+    n.append("text")
         .text(function(d) { return d.name; })
         .attr("x", 0)
         .attr("y", imgHeight/2 + 15)
@@ -161,26 +157,33 @@ Geocodr.initGraph = function(username) {
           .attr("y2", function(d) { return d.target.y; });
   }
 
+
+
+
   restart();
   force.stop();
   loadingAnim();
 
-  $.getJSON("/assets/js/initialResponse.json", function(data) {
-    nodes[0].name = data.name;
-    nodes[0].img = data.gravatar_url;
-    restart();
-  });
+  // Load user as fixed self node
+  //   nodes[0].name = data.name;
+  //   nodes[0].img  = data.gravatar_url;
+  //   restart();
+  // });
 
-  setTimeout(function(){
-  $.getJSON("/assets/js/response.json.js", function(data) {
-    data.users.forEach(function(n) {
-      var r = Math.random() * 2 * Math.PI;
-      n.x = imgWidth/2 + Math.cos(r) * 100;
-      n.y = imgHeight/2 + Math.sin(r) * 100;
-      n.img = n.gravtar_url;
-    });
-    nodes = nodes.concat(data.users);
-    endLoading();
-  })}, 1000);
+  // Load user graph
+  $.getJSON("/users/info/"+username, function(data) {
+    nodes[0].name = data.name;
+    nodes[0].img = data.avatarUrl;
+    $(".node-self").find("image").attr("href", data.avatarUrl);
+    $(".node-self").find("text").text(data.name);
+    // data.users.forEach(function(n) {
+    //   var r = Math.random() * 2 * Math.PI;
+    //   n.x = imgWidth/2 + Math.cos(r) * 100;
+    //   n.y = imgHeight/2 + Math.sin(r) * 100;
+    //   n.img = n.gravtar_url;
+    // });
+    // nodes = nodes.concat(data.users);
+    endLoading()
+  });
 
 };
