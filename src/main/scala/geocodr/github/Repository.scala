@@ -4,7 +4,7 @@ import dispatch._
 import Defaults._
 import argonaut._
 import Argonaut._
-import geocodr.github.search.Users.{ UserSearch, UserSearchDecodeJSON, UserSearchDecodeJSON}
+import geocodr.github.search.Users.{ UserSearch, UserSearchEncodeJson, UserSearchDecodeJson}
 
 object repository {
   case class Repository(

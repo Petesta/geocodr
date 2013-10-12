@@ -46,37 +46,45 @@ package object search {
   }
 
   trait Constrainable[A]
+  //implicit object DateTimeConstr extends Constrainable[DateTime]
+  implicit object IntConstr extends Constrainable[Int]
 
-  sealed class Constraint[A: Constrainable] {
+  sealed abstract class Constraint[A: Constrainable] {
     def filter: String
   }
 
-  implicit object DateTimeConstr extends Constrainable[DateTime]
-  implicit object IntConstr extends Constrainable[Int]
-
-
-  case class Eq[A](value: A) extends Constrainable[A] {
+  case class Eq[A: Constrainable](value: A) extends Constraint[A] {
     def filter = value.toString
   }
 
-  case class LessThan[A](value: A) extends Constrainable[A] {
+  case class LessThan[A: Constrainable](value: A) extends Constraint[A] {
     def filter = s"<$value"
   }
 
-  case class LessThanEq[A](value: A) extends Constrainable[A] {
+  case class LessThanEq[A: Constrainable](value: A) extends Constraint[A] {
     def filter = s"<=$value"
   }
 
-  case class GreaterThan[A](value: A) extends Constrainable[A] {
+  case class GreaterThan[A: Constrainable](value: A) extends Constraint[A] {
     def filter = s">$value"
   }
 
-  case class GreaterThanEq[A](value: A) extends Constrainable[A] {
+  case class GreaterThanEq[A: Constrainable](value: A) extends Constraint[A] {
     def filter = s">=$value"
   }
 
-  case class Range[A](start: A, end: A) extends Constrainable[A] {
+  case class Range[A: Constrainable](start: A, end: A) extends Constraint[A] {
     def filter = s"$start..$end"
+  }
+
+  abstract class ComparableOps[A: Constrainable, B] { self =>
+    val constructor: Constraint[A] => B
+    def ==(x: A) = constructor(Eq(x))
+    def <(x: A)  = constructor(LessThan(x))
+    def <=(x: A) = constructor(LessThanEq(x))
+    def >(x: A)  = constructor(GreaterThan(x))
+    def >=(x: A) = constructor(GreaterThanEq(x))
+    def range(pair: (A, A)) = constructor(Range(pair._1, pair._2))
   }
   
   /* Order */

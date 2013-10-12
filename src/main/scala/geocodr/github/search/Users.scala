@@ -10,7 +10,7 @@ import argonaut._
 import Argonaut._
 
 object Users {
-  case class RepositoryCount(sc: SizeConstraint) extends UserSearchQuery {
+  case class RepositoryCount(sc: Constraint[Int]) extends UserSearchQuery {
     def query = s"repos:${sc.filter}"
   }
 
@@ -18,7 +18,7 @@ object Users {
     def query = s"created:$date"
   }
 
-  case class Followers(sc: SizeConstraint) extends UserSearchQuery {
+  case class Followers(sc: Constraint[Int]) extends UserSearchQuery {
     override def query = s"followers:${sc.filter}"
   }
 
@@ -41,7 +41,7 @@ object Users {
 
   type Url = Req
 
-  implicit def UserSearchDecodeJSON: DecodeJson[UserSearch] =
+  implicit def UserSearchDecodeJson: DecodeJson[UserSearch] =
     DecodeJson(c => for {
       login <- (c --\ "login").as[String]
       id <- (c --\ "id").as[Long]
@@ -91,10 +91,10 @@ object Users {
 
     def langaugesUsed(login: String) = {
       val query = search(QueryText(login), SortedByFollowers, Asc)
-      for {
+      /*for {
         userSearch <- query
         repoSearch <- Repositories.userRepos(userSearch.repos)
-      } yield repoSearch
+      } yield repoSearch */
     }
 
     def repositories = ???

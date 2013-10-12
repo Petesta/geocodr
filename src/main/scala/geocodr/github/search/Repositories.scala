@@ -4,7 +4,7 @@ import dispatch._
 import Defaults._
 
 object Repositories {
-  case class Size(sc: SizeConstraint) extends RepositoriesSearchQuery {
+  case class Size(sc: Constraint[Int]) extends RepositoriesSearchQuery {
     def query = ???
   }
 
@@ -24,11 +24,11 @@ object Repositories {
     def query = s"fork:$bool"
   }
 
-  object Stars extends ComparableOps[Stars] {
+  object Stars extends ComparableOps[Int, Stars] {
     val constructor = Stars(_)
   }
 
-  case class Stars(sc: SizeConstraint) extends RepositoriesSearchQuery {
+  case class Stars(sc: Constraint[Int]) extends RepositoriesSearchQuery {
     override def query = s"stars:${sc.filter}"
   }
 
