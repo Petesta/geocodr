@@ -174,12 +174,20 @@ Geocodr.initGraph = function(username) {
   $.getJSON("/users/info/"+username, function(data) {
     nodes[0].name = data.name;
     nodes[0].img = data.avatarUrl;
-    $(".node-self").find("image").attr("href", data.avatarUrl);
-    $(".node-self").find("text").text(data.name);
+
+    var nearbyUsers = data.nearbyUsers,
+        loc = data.location;
+
+    var $self = $('.node-self')
+    $self.find("image").attr("href", data.avatarUrl);
+    $self.find("text").text(data.name);
 
     $header = $('.graph-container h1');
-    $header.find(".location").text(data.location);
-    $header.find(".count").text(data.nearbyUsers.length);
+    if (loc === null) {
+      $header.text("We found " + nearbyUsers.length + " developers similar to you:");
+    } else {
+      $header.text("We found " + nearbyUsers.length + " developers similar to you in " + loc + ":");
+    }
     $header.fadeIn();
 
     var nearbyUsers = data.nearbyUsers;
