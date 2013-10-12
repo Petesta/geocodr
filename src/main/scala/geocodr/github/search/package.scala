@@ -54,7 +54,7 @@ package object search {
       location.map {
         case ' ' => '-'
         case c   => c.toLower
-        }.replace(",", "").mkString("")
+        }.replaceFirst("(,.*)", "").mkString("")
       }"
   }
 
