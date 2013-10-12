@@ -9,6 +9,11 @@ var data = [
   }
 ];
 
+// Lang intersection
+// ------------------------------------
+Geocodr.fillLangSummary = function(self, other) {
+  $('.lang-summary').text("comparing " + self.username + " and " + other.username)
+}
 
 // Lang pie charts
 // ------------------------------------
@@ -118,7 +123,16 @@ $(function() {
 })
 
 window.go = function() {
-  Geocodr.showUserPage("andrew")
+  Geocodr.showUserPage({
+    'self': {
+      username: "andrewberls",
+      photo: "https://0.gravatar.com/avatar/eedc3687a5e76c282e43508e29cd67b7?d=https%3A%2F%2Fidenticons.github.com%2F2cd91248fe0d57b51dc83ffbe5782325.png&s=440",
+    },
+    'other': {
+      username: "roeschinc",
+      photo: "https://1.gravatar.com/avatar/41b3f81fe12349bcfa70eff20eaeb187?d=https%3A%2F%2Fidenticons.github.com%2Fa1e0a41acabf07a7b060cfab2e882e16.png&s=440"
+    }
+  });
 }
 
 //$(function() {

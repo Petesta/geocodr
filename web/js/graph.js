@@ -114,14 +114,20 @@ Geocodr.initGraph = function(username) {
           // TODO: hasClass isn't working here? WTF
           if ($(this).attr("class").indexOf("node-self") > -1) return false;
 
-          selfphoto  = $('.node-self').find("image").last().attr("href")
+
+          var $self  = $('.node-self');
+          selfphoto  = $self.find("image").last().attr("href")
           otherphoto = $(this).find("image").attr("href");
-          username   = $(this).attr("desc");
 
           Geocodr.showUserPage({
-            username: username,
-            selfphoto: selfphoto,
-            otherphoto: otherphoto
+            'self': {
+              photo: selfphoto,
+              username: $self.attr('desc')
+            },
+            'other': {
+              photo: otherphoto,
+              username: $(this).attr('desc')
+            }
           });
         });
 

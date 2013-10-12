@@ -24,12 +24,16 @@ Geocodr.showGraphPage = function(username) {
 // Load and slide in user page in from the right
 Geocodr.showUserPage = function(options) {
   // TODO: fix params
-  $('.users-page-container').load('/users?username=' + options.username, function() {
+  var self = options.self,
+      other = options.other;
+
+  $('.users-page-container').load('/users?username='+ other.username, function() {
+    Geocodr.fillLangSummary(self, other)
     Geocodr.drawLangPiechart('.chart-you');
     Geocodr.drawLangPiechart('.chart-them');
 
-    $('.user-photo.you').css('background', "url('"+options.selfphoto+"')");
-    $('.user-photo.them').css('background', "url('"+options.otherphoto+"')");
+    $('.user-photo.you').css('background', "url('"+self.photo+"')");
+    $('.user-photo.them').css('background', "url('"+other.photo+"')");
 
     Geocodr.showUserDrawer();
   });
