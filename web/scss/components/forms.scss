@@ -19,11 +19,11 @@ form {
     //width: 100%;
 
     &:focus {
-      border-color: lighten($blue, 45);
+      //border-color: lighten($blue, 45);
       outline: none;
     }
 
-    //&.field-error { border-color: $red; }
+    &.field-error { border-color: $red; }
   }
 
 

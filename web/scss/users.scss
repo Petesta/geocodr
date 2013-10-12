@@ -1,9 +1,14 @@
+.users-page-container {}
+
 .users-container {
   background-color: white;
   border-left: 1px solid $border-color;
   border-right: 1px solid $border-color;
   width: 75%;
-  margin: 0 auto;
+
+  position: absolute;
+  top: 0;
+  left: 100%;
 }
 
 .panel {
