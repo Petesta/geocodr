@@ -46,16 +46,16 @@ package object search {
   }
 
   case class Language(language: String) extends SearchQuery with UserSearchQuery with RepositoriesSearchQuery {
-    def query = s"language:${
-      language.map {
-        case ' ' => '-'
-        case c   => c.toLower
-      }.mkString("")
-    }"
+    def query = s"language:${language}"
   }
 
   case class Location(location: String) extends SearchQuery with UserSearchQuery with RepositoriesSearchQuery {
-    def query = s"location:$location"
+    def query = s"location:${
+      location.map {
+        case ' ' => '-'
+        case c   => c.toLower
+        }.replace(",", "").mkString("")
+      }"
   }
 
   trait Constrainable[A]
