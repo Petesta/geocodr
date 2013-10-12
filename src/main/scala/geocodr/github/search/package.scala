@@ -59,7 +59,7 @@ package object search {
   }
 
   trait Constrainable[A]
-  //implicit object DateTimeConstr extends Constrainable[DateTime]
+
   implicit object IntConstr extends Constrainable[Int]
 
   sealed abstract class Constraint[A: Constrainable] {
