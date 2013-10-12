@@ -76,6 +76,8 @@ Geocodr.drawLangPiechart = function(selector) {
 var drawerTransitionTime = 600; // ms
 
 Geocodr.showUserDrawer = function() {
+  $('body').animate({ backgroundColor: '#e5e5e5' }); // Darken a bit
+
   this.animateUserDrawer({
     position: 'relative',
     left: ($(window).outerWidth() - $('.users-container').outerWidth()) / 2
@@ -83,6 +85,9 @@ Geocodr.showUserDrawer = function() {
 }
 
 Geocodr.hideUserDrawer = function() {
+  $('.btn-back').remove();
+  $('body').animate({ backgroundColor: '#f4f4f4' }); // Back to light
+
   this.animateUserDrawer({
     position: 'absolute',
     left: '100%'
@@ -92,3 +97,19 @@ Geocodr.hideUserDrawer = function() {
 Geocodr.animateUserDrawer = function(opts) {
   $('.users-container').animate(opts, drawerTransitionTime);
 }
+
+$(function() {
+  $(document).on('click', '.btn-back', function() {
+    Geocodr.hideUserDrawer();
+    return false;
+  });
+
+})
+
+window.go = function() {
+  Geocodr.showUserPage("andrew")
+}
+
+//$(function() {
+  //setTimeout(go, 1000);
+//})

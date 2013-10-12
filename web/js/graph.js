@@ -1,4 +1,4 @@
-Geocodr.initGraph = function(img_url, name) {
+Geocodr.initGraph = function(user_name) {
   var svg = d3.select(".graph-container svg")
 
   var $svg   = $('.graph-container svg'),
@@ -14,8 +14,8 @@ Geocodr.initGraph = function(img_url, name) {
   var nodes = [
     {
       index: 0,
-      img:   img_url,
-      name:  name,
+      img:   "/assets/images/default.png",
+      name:  user_name,
       fixed: true,
       x: width/2,
       y: height/2
@@ -58,15 +58,15 @@ Geocodr.initGraph = function(img_url, name) {
   var loading = true,
       numLoading = 20;
 
-  var loadingDots = svg.append("g")
+  var loadingDots = svg.insert("g", ":first-child")
       .attr("transform", "translate(" + width/2 + "," + height/2 + ")")
 
   d3.range(numLoading).forEach(function(i) {
       loadingDots.append("circle")
         .attr("class", "loading-dot")
         .attr("r", 5)
-        .attr("cx", (imgWidth/2 + 22) * Math.cos(i / numLoading * 2 * Math.PI))
-        .attr("cy", (imgWidth/2 + 22) * Math.sin(i / numLoading * 2 * Math.PI))
+        .attr("cx", (imgWidth/2 + 32) * Math.cos(i / numLoading * 2 * Math.PI))
+        .attr("cy", (imgWidth/2 + 32) * Math.sin(i / numLoading * 2 * Math.PI))
         });
 
   function tween(d, i, a) {
@@ -83,12 +83,12 @@ Geocodr.initGraph = function(img_url, name) {
         .each("end", loadingAnim);
     } else {
       var called = false;
-      var first = loadingDots.selectAll("circle")
+      loadingDots.selectAll("circle")
         .transition()
         .duration(250)
         .attr("cx", 0)
         .attr("cy", 0)
-        .each("end", function(){
+        .each("end", function(s) {
           if (!called) {
             called = true;
             restart();
@@ -102,21 +102,11 @@ Geocodr.initGraph = function(img_url, name) {
     loading = false;
   }
 
-  $.getJSON("/assets/js/response.json.js", function(data) {
-    data.users.forEach(function(n) {
-      var r = Math.random() * 2 * Math.PI;
-      n.x = imgWidth/2 + Math.cos(r) * 10;
-      n.y = imgHeight/2 + Math.sin(r) * 10;
-      n.img = n.gravtar_url;
-    });
-    nodes = nodes.concat(data.users);
-    endLoading();
-  });
-
   var links, force, link, node;
+  link = svg.selectAll("line");
+  node = svg.selectAll(".node");
 
   function restart() {
-    console.log("restarting");
     links = d3.range(nodes.length - 1).map(function(i) {
       return {
         source: 0,
@@ -134,20 +124,23 @@ Geocodr.initGraph = function(img_url, name) {
       .on("tick", tick)
       .start();
 
-    link = svg.selectAll("line")
-          .data(links)
-        .enter().insert("svg:line", ":first-child")
+
+    link = link.data(links);
+    link.exit().remove();
+
+    link.enter().insert("svg:line", ":first-child")
+          .attr("class", "graph-link")
           .attr("x1", function(d) { return d.source.x; })
           .attr("y1", function(d) { return d.source.y; })
           .attr("x2", function(d) { return d.target.x; })
           .attr("y2", function(d) { return d.target.y; })
-          .style("stroke", function(d, i) { return d3.rgb(0, 0, 0); })
 
-    node = svg.selectAll(".node")
-        .data(nodes)
-      .enter().insert("g")
-        .attr("class", ".node")
-        .attr("transform", "translate(" + width/2 + "," + height/2 + ")")
+    node = node.data(nodes);
+    node.exit().remove();
+
+    node.enter().insert("g", "g.node")
+        .attr("class", "node")
+        .attr("transform", function(d) { return "translate(" + d.x/2 + "," + d.y/2 + ")"; });
 
     node.append("image")
           .attr("class", "profile-picture")
@@ -184,4 +177,23 @@ Geocodr.initGraph = function(img_url, name) {
   restart();
   force.stop();
   loadingAnim();
+
+  $.getJSON("/assets/js/initialResponse.json", function(data) {
+    nodes[0].name = data.name;
+    nodes[0].img = data.gravatar_url;
+    restart();
+  });
+
+  setTimeout(function(){
+  $.getJSON("/assets/js/response.json.js", function(data) {
+    data.users.forEach(function(n) {
+      var r = Math.random() * 2 * Math.PI;
+      n.x = imgWidth/2 + Math.cos(r) * 100;
+      n.y = imgHeight/2 + Math.sin(r) * 100;
+      n.img = n.gravtar_url;
+    });
+    nodes = nodes.concat(data.users);
+    endLoading();
+  })}, 1000);
+
 };

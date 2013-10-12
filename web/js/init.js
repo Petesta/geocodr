@@ -12,6 +12,7 @@ Geocodr.hideLoginPage = function() {
 Geocodr.showGraphPage = function(username) {
   var $container = $('.graph-page-container');
   $container.load('/graph?username=' + username, function() {
+    $('body').animate({ backgroundColor: '#f4f4f4' });
     $container.animate({
       'top': '50px',
     }, slideTime);
@@ -24,10 +25,10 @@ Geocodr.showGraphPage = function(username) {
 Geocodr.showUserPage = function(username) {
   // TODO: fix params
   $('.users-page-container').load('/users?username=' + username, function() {
-    $('body').animate({ backgroundColor: '#f4f4f4' });
-
     Geocodr.drawLangPiechart('.chart-you');
     Geocodr.drawLangPiechart('.chart-them');
+    $('.user-photo.you').css('background', "url('https://0.gravatar.com/avatar/eedc3687a5e76c282e43508e29cd67b7?d=https%3A%2F%2Fidenticons.github.com%2F2cd91248fe0d57b51dc83ffbe5782325.png&s=440')");
+    $('.user-photo.them').css('background', "url('http://i.imgur.com/HdeUiJP.jpg')");
     Geocodr.showUserDrawer();
   });
 }

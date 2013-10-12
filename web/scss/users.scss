@@ -26,6 +26,16 @@
 
 }
 
+.btn-back {
+  border-radius: 100%;
+  box-shadow: none;
+  font-size: 2em;
+  padding: 25px 27px;
+  position: absolute;
+  top: 30px;
+  left: -40px;
+}
+
 .panel-icon {
   display: block;
   color: silver; // #c0c0c0
@@ -58,7 +68,7 @@
 
   .user-photo {
     @include border-box;
-    border: 1px solid red; // TODO
+    background-size: cover !important;
     border-radius: 50%;
     width: $user-photo-size;
     height: $user-photo-size;
@@ -71,6 +81,8 @@
     margin-top: $user-photo-size / 2;
     width: $photo-container-width - (2 * $user-photo-size);
   }
+
+  p { margin: 20px 0 0; }
 }
 
 .panel-langs {
