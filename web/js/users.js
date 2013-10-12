@@ -106,8 +106,10 @@ $(function() {
     if (username === '') {
       $field.addClass('field-error')
     } else {
-      // TODO: this should load the graph, this is a placeholder
-      $('.users-page-container').load('/users/' + username, function() {
+      // TODO: this isn't quite the intended behavior.
+      // We should be loading the graph page with <username> as the center, but this
+      // serves for demonstration purposes
+      $('.users-page-container').load('/users?username=' + username, function() {
         drawLangPiechart('.chart-you');
         drawLangPiechart('.chart-them');
         showDrawer();
