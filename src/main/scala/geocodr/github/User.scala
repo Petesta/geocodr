@@ -44,14 +44,14 @@ object user {
     accountType: String
   ) {
 
-    def info: UserInfo = UserInfo(login, avatarUrl, location, Await.result(localUsers, 2 seconds))
+    def info: UserInfo = UserInfo(login, avatarUrl, location, Await.result(localUsers, 10 seconds))
 
     def localUsers = for {
       query <- Users.search(Location(location.getOrElse("San Francisco")), Users.SortedByFollowers, Desc)
       queries <- query match {
         case None => ???
         case Some(qs) =>
-          Future.sequence(qs.map(_.user))
+          Future.sequence(qs.take(3).map(_.user))
       }
     } yield queries.sequence.getOrElse(Nil)
 

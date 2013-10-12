@@ -36,7 +36,7 @@ object ServerPlan extends unfiltered.filter.Plan {
         Some(userSearch) <- search
         user <- userSearch.head.user
       } yield user.map(_.info)
-      Ok ~> JsonResponse(Await.result(userInfo, 1 second).get)
+      Ok ~> JsonResponse(Await.result(userInfo, 10 seconds).get)
 
     case req @ (GET(_)) =>
       Ok ~> Scalate(req, "404.mustache")

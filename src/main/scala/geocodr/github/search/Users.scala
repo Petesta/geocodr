@@ -102,8 +102,8 @@ object Users {
 
   def search(sq: CompoundQuery[UserSearchQuery], s: UsersSearchSort, o: Order)/*: Future[UserSearch]*/ = {
     val url = root / "search" / "users"
-    val params = Map("q" -> sq.query)//, "sort" -> s.sort, "order" -> o.order)
-    val future = Http(url <:< Seq("Accept" -> "application/vnd.github.preview") <<? params OK as.String)
+    val params = Map("q" -> sq.query, "sort" -> s.sort, "order" -> o.order)
+    val future = Http(url <:< globalHeaders <<? params OK as.String)
     for {
       result <- future
     } yield Parse.parse(result) match {
