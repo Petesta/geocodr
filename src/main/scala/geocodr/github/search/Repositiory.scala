@@ -4,12 +4,26 @@ import dispatch._
 import Defaults._
 
 object Repository {
-  case class Size(sc: SizeConstraint) extends RepositorySearchQuery
-  case class Forks(sc: SizeConstraint) extends RepositorySearchQuery
+  case class Size(sc: SizeConstraint) extends RepositorySearchQuery {
+    def query = ???
+  }
+
+  case class Forks(sc: SizeConstraint) extends RepositorySearchQuery {
+    def query = ???
+  }
+
   //case class Fork()
-  case class Created() extends RepositorySearchQuery
-  case class Pushed() extends RepositorySearchQuery
-  case class User() extends RepositorySearchQuery
+  case class Created() extends RepositorySearchQuery {
+    def query = ???
+  }
+
+  case class Pushed() extends RepositorySearchQuery {
+    def query = ???
+  }
+
+  case class User() extends RepositorySearchQuery {
+    def query = ???
+  }
 
   case class Language(name: String) extends RepositorySearchQuery {
     override def query = s"language:${name.map(_.toLower).mkString("")}"
@@ -45,7 +59,7 @@ object Repository {
     def sort = "updated"
   }  
 
-  def search(sq: RepositorySearchQuery, s: SearchSort, o: Order) = {
+  def search(sq: CompoundQuery[RepositorySearchQuery], s: SearchSort, o: Order) = {
     val url = root / "search" / "repositories"
     val params = Map("q" -> sq.query, "sort" -> s.sort, "order" -> o.order) 
     Http(url <:< Seq("Accept" -> "application/vnd.github.preview") <<? params OK as.String)
