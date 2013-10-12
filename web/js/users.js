@@ -143,6 +143,7 @@ Geocodr.showUserDrawer = function() {
     left: ($(window).outerWidth() - $('.users-container').outerWidth()) / 2
   });
 
+  // Hide drawer if clicking in gutter
   var $container = $('.users-container')
   $('body').on('click', function(e) {
     var offset = $container.offset()
@@ -167,6 +168,20 @@ Geocodr.hideUserDrawer = function() {
 Geocodr.animateUserDrawer = function(opts) {
   $('.users-container').animate(opts, drawerTransitionTime);
 }
+
+// Fill in all modules for a user
+Geocodr.renderUserStats = function(self, other) {
+  $('.user-photo.you').css('background', "url('"+self.photo+"')");
+  $('.user-photo.them').css('background', "url('"+other.photo+"')");
+
+  Geocodr.fillLangSummary(self, other)
+  Geocodr.drawLangPiechart('.chart-you');
+  Geocodr.drawLangPiechart('.chart-them');
+
+  Geocodr.showUserDrawer();
+}
+
+
 
 $(function() {
   $(document).on('click', '.btn-back', function() {

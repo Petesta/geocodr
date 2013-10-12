@@ -28,14 +28,7 @@ Geocodr.showUserPage = function(options) {
       other = options.other;
 
   $('.users-page-container').load('/users?username='+ other.username, function() {
-    Geocodr.fillLangSummary(self, other)
-    Geocodr.drawLangPiechart('.chart-you');
-    Geocodr.drawLangPiechart('.chart-them');
-
-    $('.user-photo.you').css('background', "url('"+self.photo+"')");
-    $('.user-photo.them').css('background', "url('"+other.photo+"')");
-
-    Geocodr.showUserDrawer();
+    Geocodr.renderUserStats(self, other)
   });
 }
 
