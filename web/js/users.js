@@ -145,7 +145,7 @@ Geocodr.drawLangPiechart = function(selector, langData) {
 
     //<span class="swatch" style="background-color: #08c"></span> Ruby
     return "<span class='swatch' style='background-color: " + color(i) + "'></span> " + d.language +
-      "<span class='percent'>("+d.percent.toFixed(2)+"%)</span>"
+      "<span class='percent'>("+Math.round(d.percent*100)+"%)</span>"
   }
 
   d3.select(selector + " .legend")
