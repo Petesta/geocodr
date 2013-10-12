@@ -9,8 +9,8 @@ object user {
   case class User (
     login: String,
     id: Long,
-    avatar_url: String,
-    gravatar_id: String,
+    avatarUrl: String,
+    gravatarId: String,
     url: String,
     name: String,
     company: String,
@@ -19,19 +19,21 @@ object user {
     email: String,
     hireable: Boolean,
     bio: String,
-    public_repos: Long,
-    public_gists: Long,
+    publicRepos: Long,
+    publicGists: Long,
     followers: Long,
     following: Long,
-    html_url: String,
-    created_at: String,
-    account_type: String
-  )
+    htmlUrl: String,
+    createdAt: String,
+    accountType: String
+  ) {
+    case UserInfo(name: String, avatarUrl: String, location: String, close: List[User])
+  }
 
   implicit def UserCodecJson =
     casecodec19(User.apply, User.unapply)("login", "id", "avatar_url", "gravatar_id",
                                           "url", "name", "company", "blog", "location",
                                           "email", "hireable", "bio", "public_repos",
                                           "public_gists", "followers", "following",
-                                          "html_url", "created_at", "account_type")
+                                          "html_url", "created_at", "type")
 }
