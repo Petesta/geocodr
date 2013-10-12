@@ -1,0 +1,4 @@
+<h1>user.ssp</h1>
+
+<%= username %>
+

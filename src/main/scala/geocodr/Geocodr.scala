@@ -12,8 +12,13 @@ object HelloPlan extends unfiltered.filter.Plan {
   def intent = {
     case req @ (GET(Path("/login")) | GET(Path("/"))) =>
       Ok ~> Scalate(req, "login.ssp")
+
     case req @ (GET(Path("/geo")) | GET(Path("/"))) =>
       Ok ~> Scalate(req, "geo.ssp")
+
+    case req @ (GET(Path(Seg("users" :: username :: Nil)))) =>
+      Ok ~> Scalate(req, "user.ssp", "username" -> username)
+
     case req @ GET(_) => Ok ~> Scalate(req, "helloWorld.ssp")
   }
 }
