@@ -77,7 +77,7 @@
   }
 
   .link {
-    border-top: 1px solid $border-color;
+    border-top: 1px solid darken($border-color, 5);
     margin-top: $user-photo-size / 2;
     width: $photo-container-width - (2 * $user-photo-size);
   }
