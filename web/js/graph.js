@@ -1,46 +1,20 @@
-<html>
-<head>
-  <meta name="viewport" content="width=device-width" />
-  <link href="http://fonts.googleapis.com/css?family=Open+Sans:300" rel="stylesheet" type="text/css" />
-  <script src="http://d3js.org/d3.v3.min.js"></script>
-  <style type="text/css">
-    .profile-name {
-      /* stroke: #fff; */
-      /* stroke-width: 1px; */
-      /* stroke-location: outside; */
-    }
-    .graph-circle {
-      fill-opacity: 0;
-      stroke-opacity: .2;
-      stroke: #000;
-    }
-  </style>
- </head>
-<body>
-  <svg>
-    <defs>
-      <clipPath id="clip" clipPathUnits="objectBoundingBox">
-        <circle r=".5" cx=".5" cy=".5"/>
-      </clipPath>
-      <mask id="Mask">
-        <circle cx="100" cy="100" r="50" />
-      </mask>
-    </defs>
-  </svg>
+(function() {
 
-</body>
-<script>
 
-var width = 960,
+
+
+
+var width  = 960,
     height = 500;
 
-var imgWidth = 100,
+var imgWidth  = 100,
     imgHeight = 100;
 
 var numNodes = 10;
 
 var fill = d3.scale.category10();
 
+// TODO: remove dummy data
 var nodes = [
   {
     index: 0,
@@ -75,20 +49,23 @@ var nodes2 = [
   }
 ]
 
+
+
+
 nodes2.forEach(function(n) {
     var r = Math.random() * 2 * Math.PI;
     console.log(Math.cos(r));
     n.x += Math.cos(r) * 10;
     n.y += Math.sin(r) * 10;
-    }
-    );
+});
 
-var svg = d3.select("svg")
+var svg = d3.select(".graph-container svg")
 var loading = true;
 
 var numLoading = 20;
 var loadingDots = svg.append("g")
     .attr("transform", "translate(" + width/2 + "," + height/2 + ")")
+
 d3.range(numLoading).forEach(function(i) {
     loadingDots.append("circle")
       .attr("class", "loading-dot")
@@ -103,7 +80,7 @@ function tween(d, i, a) {
 }
 
 function loadingAnim() {
-  if(loading) {
+  if (loading) {
     loadingDots.transition()
           .duration(300)
           .ease("linear")
@@ -117,13 +94,14 @@ function loadingAnim() {
       .attr("cx", 0)
       .attr("cy", 0)
       .each("end", function(){
-        if(!called) {
+        if (!called) {
           called = true;
           restart();
-          }});
+        }
+      });
   }
 }
-loadingAnim();
+
 
 function endLoading() {
   nodes = nodes.concat(nodes2);
@@ -132,17 +110,19 @@ function endLoading() {
 
 
 svg.on("click", function() {
-    endLoading();
-    });
+  endLoading();
+});
 
 var links, force, link, node;
 
 function restart() {
   console.log("restarting");
   links = d3.range(nodes.length - 1).map(function(i) {
-    return {source: 0, target: i + 1};
-    });
-
+    return {
+      source: 0,
+      target: i + 1
+    };
+  });
 
  force = d3.layout.force()
     .nodes(nodes)
@@ -154,47 +134,45 @@ function restart() {
     .on("tick", tick)
     .start();
 
-link = svg.selectAll("line")
-      .data(links)
-    .enter().insert("svg:line", ":first-child")
-      .attr("x1", function(d) { return d.source.x; })
-      .attr("y1", function(d) { return d.source.y; })
-      .attr("x2", function(d) { return d.target.x; })
-      .attr("y2", function(d) { return d.target.y; })
-      .style("stroke", function(d, i) { return d3.rgb(0, 0, 0); })
+  link = svg.selectAll("line")
+        .data(links)
+      .enter().insert("svg:line", ":first-child")
+        .attr("x1", function(d) { return d.source.x; })
+        .attr("y1", function(d) { return d.source.y; })
+        .attr("x2", function(d) { return d.target.x; })
+        .attr("y2", function(d) { return d.target.y; })
+        .style("stroke", function(d, i) { return d3.rgb(0, 0, 0); })
 
-node = svg.selectAll(".node")
-    .data(nodes)
-  .enter().insert("g")
-    .attr("class", ".node")
-    .attr("transform", "translate(" + width/2 + "," + height/2 + ")")
+  node = svg.selectAll(".node")
+      .data(nodes)
+    .enter().insert("g")
+      .attr("class", ".node")
+      .attr("transform", "translate(" + width/2 + "," + height/2 + ")")
 
-node.append("image")
-      .attr("class", "profile-picture")
-      .attr("x", - imgWidth/2)
-      .attr("y", - imgHeight/2)
-      .attr("xlink:href", function(d) { return d.img })
-      .attr("width", imgWidth)
-      .attr("height", imgHeight)
-      .attr("clip-path", "url(#clip)")
+  node.append("image")
+        .attr("class", "profile-picture")
+        .attr("x", - imgWidth/2)
+        .attr("y", - imgHeight/2)
+        .attr("xlink:href", function(d) { return d.img })
+        .attr("width", imgWidth)
+        .attr("height", imgHeight)
+        .attr("clip-path", "url(#clip)")
 
-node.append("circle")
-      .attr("x", - imgWidth/2)
-      .attr("y", - imgHeight/2)
-      .attr("r", imgHeight/2)
-      .attr("class", "graph-circle")
+  node.append("circle")
+        .attr("x", - imgWidth/2)
+        .attr("y", - imgHeight/2)
+        .attr("r", imgHeight/2)
+        .attr("class", "graph-circle")
 
-node.append("text")
-    .text(function(d) { return d.name; })
-    .attr("x", 0)
-    .attr("y", imgHeight/2 + 15)
-    .attr("text-anchor", "middle")
-    .attr("class", "profile-name")
+  node.append("text")
+      .text(function(d) { return d.name; })
+      .attr("x", 0)
+      .attr("y", imgHeight/2 + 15)
+      .attr("text-anchor", "middle")
+      .attr("class", "profile-name")
 
 }
 
-restart();
-force.stop();
 
 // svg.style("opacity", 1e-6)
 //   .transition()
@@ -218,8 +196,11 @@ function tick(e) {
 //   force.resume();
 // }
 
-</script>
-</html>
 
+window.startGraph = function() {
+  restart();
+  force.stop();
+  loadingAnim();
+}
 
-
+})();

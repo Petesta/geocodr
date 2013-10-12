@@ -120,6 +120,8 @@ function showGraphPage(username) {
     $container.animate({
       'top': '50px',
     }, slideTime);
+
+    startGraph();
   });
 }
 
