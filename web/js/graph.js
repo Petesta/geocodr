@@ -85,7 +85,7 @@ Geocodr.initGraph = function(username) {
    force = d3.layout.force()
       .nodes(nodes)
       .links(links)
-      .linkDistance(200)
+      .linkDistance(250)
       .friction(.8)
       .size([width, height])
       .charge(-300)
@@ -142,7 +142,7 @@ Geocodr.initGraph = function(username) {
               d.x += (m[0] - initP[0]) * .1;
               return x;
             })
-            .attr("y", function(d) { 
+            .attr("y", function(d) {
               if(isNaN(d.y)) { d.y = sel.attr(y)}
               var y = d.y;
               d.y += (m[1] - initP[1]) * .1;
