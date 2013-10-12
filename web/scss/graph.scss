@@ -9,6 +9,8 @@
   width: 960px;
   text-align: center;
 
+  h1 { display: none; } // Will be faded it on data load
+
   svg {
     height: 600px;
   }
