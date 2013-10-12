@@ -1,14 +1,23 @@
 var slideTime = 750; // ms
 
+// Slide login page down
+Geocodr.showLoginPage = function() {
+  $('#name').val('')
+  $('.login-page-container').animate({
+    'top': '50px'
+  }, slideTime, function() { $('#name').focus() });
+}
+
+// Slide login page up
 Geocodr.hideLoginPage = function() {
   var $container = $('.login-page-container');
   $container.animate({
     'top': '-100%'
-  }, slideTime, function() {
-    $container.remove();
-  });
+  }, slideTime);
 }
 
+
+// Slide graph page up
 Geocodr.showGraphPage = function(username) {
   var $container = $('.graph-page-container');
   $container.load('/graph?username=' + username, function() {
@@ -17,9 +26,26 @@ Geocodr.showGraphPage = function(username) {
       'top': '50px',
     }, slideTime);
 
+    $('.back-to-login').click(function() {
+      Geocodr.hideGraphPage();
+      Geocodr.showLoginPage();
+      return false;
+    });
+
     Geocodr.initGraph(username);
   });
 }
+
+// Slide graph page down
+Geocodr.hideGraphPage = function() {
+  $('.graph-page-container').animate({
+    'top': '100%',
+  }, slideTime, function() {
+    $('.graph-container').empty()
+  });
+}
+
+
 
 // Load and slide in user page in from the right
 Geocodr.showUserPage = function(options) {

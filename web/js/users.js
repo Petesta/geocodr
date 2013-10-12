@@ -206,6 +206,7 @@ var drawerTransitionTime = 600; // ms
 
 Geocodr.showUserDrawer = function() {
   $('.btn-back').show();
+  $('.back-to-login').hide()
 
   $('body').animate({ backgroundColor: '#ddd' }, function() { // Darken a bit
     Geocodr.animateUserDrawer({
@@ -228,6 +229,7 @@ Geocodr.showUserDrawer = function() {
 
 Geocodr.hideUserDrawer = function() {
   $('.btn-back').hide();
+  $('.back-to-login').show();
   $('body').animate({ backgroundColor: '#f4f4f4' }); // Back to light
 
   this.animateUserDrawer({

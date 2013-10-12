@@ -18,3 +18,8 @@
   background-color: $primary-alt;
   &:hover { background-color: darken($primary-alt, 5%); }
 }
+
+.btn-green {
+  background-color: $green;
+  &:hover { background-color: darken($green, 5%); }
+}
