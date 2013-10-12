@@ -36,6 +36,8 @@ object HelloPlan extends unfiltered.filter.Plan {
     </html>
 
   def intent = {
+    case req @ GET(Path(Seg("login" :: Nil))) =>
+      Ok ~> Scalate(req, "login.ssp")
     case req @ GET(_) => Ok ~> Scalate(req, "helloWorld.ssp") 
   }
 }
