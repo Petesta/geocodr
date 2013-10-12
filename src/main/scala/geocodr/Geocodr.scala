@@ -47,8 +47,23 @@ object ServerPlan extends unfiltered.filter.Plan {
         languages <- user.map(_.languages).getOrElse(Future.successful { Map.empty })
       } yield languages
       Ok ~> ResponseString(Await.result(langs, 10 seconds).map {
-        case (k, v) => s"""{ "langauge": "$k", "percent": $v }"""
+        case (k, v) => s"""{ "language": "$k", "percent": $v }"""
       }.mkString( "[", "," , "]"))
+
+    /* case req @ GET(Path(Seg("users" :: "starred" :: uname1 :: uname2 Nil))) =>
+      val search1 = Users.search(QueryText(uname1), Users.SortedByFollowers, Asc)
+      val search2 = Users.search(QueryText(uname2), Users.SortedByFollowers, Asc)
+      val langs = for {
+        Some(userSearch1) <- search1
+        Some(userSearch1) <- search2
+        user <- userSearch1.filter(_.login == uname1.toLowerCase).head.user
+        languages <- user.map(_.languages).getOrElse(Future.successful { Map.empty })
+      } yield languages
+      Ok ~> ResponseString(Await.result(langs, 10 seconds).map {
+        case (k, v) => s"""{ "langauge": "$k", "percent": $v }"""
+      }.mkString( "[", "," , "]")) */
+
+
 
 
     case req @ (GET(_)) =>
