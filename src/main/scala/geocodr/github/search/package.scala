@@ -7,23 +7,24 @@ package object search {
   
   val root = url("https://api.github.com")
   
-  sealed trait SearchQuery[A <: SearchQuery[A]] {
+  sealed trait SearchQuery { self =>
     def query: String
-    def +(o: SearchQuery[A]): CompoundQuery[SearchQuery[A]] = CompoundQuery(this, o)
   }
+
+  implicit def queryToCompoundQuery[A <: SearchQuery](x: A): CompoundQuery[A] = CompoundQuery(x)
 
   /* A Sequence of Queries */
-  case class CompoundQuery[A <: SearchQuery[A]](queries: A*) extends SearchQuery[A] {
-    override def query = queries.map(_.query).mkString(" ")
-    override def +(o: A) = CompoundQuery(queries :+ o: _*)
+  case class CompoundQuery[A <: SearchQuery](queries: A*) {
+    def query = queries.map(_.query).mkString(" ")
+    def +(o: A): CompoundQuery[A] = CompoundQuery(queries :+ o: _*)
   }
 
-  trait UserSearchQuery extends SearchQuery[UserSearchQuery]
-  trait RepositorySearchQuery extends SearchQuery[RepositorySearchQuery]
+  trait UserSearchQuery extends SearchQuery
+  trait RepositorySearchQuery extends SearchQuery
   
   /* Common Queries Here */
-  case class SearchIn(text: String, fields: List[String]) extends UserSearchQuery with RepositorySearchQuery {
-    override def query = s"$text in:${fields.mkString(",")}"
+  case class SearchIn(text: String, fields: List[String]) extends RepositorySearchQuery {
+    def query = s"$text in:${fields.mkString(",")}"
   }
 
   /* Sizing Constraints */
