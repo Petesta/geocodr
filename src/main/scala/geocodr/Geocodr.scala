@@ -33,18 +33,18 @@ object ServerPlan extends unfiltered.filter.Plan {
       }
 
     case req @ GET(Path(Seg("users" :: "info" :: username :: Nil))) =>
-      val search = Users.search(QueryText(username), Users.SortedByFollowers, Asc)
+      val search = Users.search(QueryText(username) + SearchIn("login"), Users.SortedByFollowers, Desc)
       val userInfo = for {
         Some(userSearch) <- search
-        user <- userSearch.filter(_.login == username.toLowerCase).head.user
+        user <- userSearch.filter(_.login.toLowerCase == username.toLowerCase).head.user
       } yield user.map(_.info(center = true))
       Ok ~> JsonResponse(Await.result(userInfo, 10 seconds).get)
 
     case req @ GET(Path(Seg("users" :: "languages" :: username :: Nil))) =>
-      val search = Users.search(QueryText(username), Users.SortedByFollowers, Asc)
+      val search = Users.search(QueryText(username) + SearchIn("login"), Users.SortedByFollowers, Desc)
       val langs = for {
         Some(userSearch) <- search
-        user <- userSearch.filter(_.login == username.toLowerCase).head.user
+        user <- userSearch.filter(_.login.toLowerCase == username.toLowerCase).head.user
         languages <- user.map(_.languages).getOrElse(Future.successful { Map.empty })
       } yield languages
       Ok ~> ResponseString(Await.result(langs, 10 seconds).map {
@@ -52,13 +52,13 @@ object ServerPlan extends unfiltered.filter.Plan {
       }.mkString( "[", "," , "]"))
 
     case req @ GET(Path(Seg("users" :: "starred" :: uname1 :: uname2 :: Nil))) =>
-      val search1 = Users.search(QueryText(uname1), Users.SortedByFollowers, Asc)
-      val search2 = Users.search(QueryText(uname2), Users.SortedByFollowers, Asc)
+      val search1 = Users.search(QueryText(uname1), Users.SortedByFollowers, Desc)
+      val search2 = Users.search(QueryText(uname2), Users.SortedByFollowers, Desc)
       val repos = for {
         Some(userSearch1) <- search1
         Some(userSearch2) <- search2
-        Some(user1) <- userSearch1.filter(_.login == uname1.toLowerCase).head.user
-        Some(user2) <- userSearch2.filter(_.login == uname2.toLowerCase).head.user
+        Some(user1) <- userSearch1.filter(_.login.toLowerCase == uname1.toLowerCase).head.user
+        Some(user2) <- userSearch2.filter(_.login.toLowerCase == uname2.toLowerCase).head.user
         starred1 <- user1.starredRepos
         starred2 <- user2.starredRepos
       } yield Repository.intersect(starred1, starred2)

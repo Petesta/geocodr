@@ -41,7 +41,7 @@ package object search {
   implicit def stringToText(s: String) = QueryText(s)
   
   /* Common Queries Here */
-  case class SearchIn(fields: List[String]) extends SearchQuery with UserSearchQuery with RepositoriesSearchQuery {
+  case class SearchIn(fields: String*) extends SearchQuery with UserSearchQuery with RepositoriesSearchQuery {
     def query = s"in:${fields.mkString(",")}"
   }
 
