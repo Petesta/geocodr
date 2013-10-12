@@ -14,12 +14,12 @@ object Users {
     def query = s"repos:${sc.filter}"
   }
 
-  case class Created() extends UserSearchQuery {
-    def query = ???
+  case class Created(date: String) extends UserSearchQuery {
+    def query = s"created:$date"
   }
 
   case class Followers(sc: SizeConstraint) extends UserSearchQuery {
-    override def query = s"stars:${sc.filter}"
+    override def query = s"followers:${sc.filter}"
   }
 
   /* SearchSort */

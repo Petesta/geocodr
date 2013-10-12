@@ -8,11 +8,6 @@ object Repositories {
     def query = ???
   }
 
-  case class Forks(sc: SizeConstraint) extends RepositoriesSearchQuery {
-    def query = ???
-  }
-
-  //case class Fork()
   case class Created() extends RepositoriesSearchQuery {
     def query = ???
   }
@@ -25,8 +20,8 @@ object Repositories {
     def query = ???
   }
 
-  case class Language(name: String) extends RepositoriesSearchQuery {
-    override def query = s"language:${name.map(_.toLower).mkString("")}"
+  case class Fork(bool: Boolean) extends RepositoriesSearchQuery {
+    def query = s"fork:$bool"
   }
 
   object Stars extends ComparableOps[Stars] {
