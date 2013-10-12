@@ -7,6 +7,29 @@ import Argonaut._
 import geocodr.github.search.Users.{ UserSearch, UserSearchEncodeJson, UserSearchDecodeJson}
 
 object repository {
+  case class Repository (
+    id: Long,
+    owner: UserSearch,
+    name: String,
+    fullName: String,
+    description: String,
+    priv: Boolean,
+    htmlUrl: String,
+    fork: Boolean,
+    url: String,
+    homepage: String,
+    watchersCount: Long,
+    language: String,
+    masterBranch: String,
+    defaultBranch: String
+  )
+
+  implicit def RepositoryCodecJson =
+    casecodec14(Repository.apply, Repository.unapply)("id", "owner", "name", "full_name",
+                                                      "description", "private", "html_url",
+                                                      "fork", "url", "homepage", "watchers_count",
+                                                      "language", "master_branch", "default_branch")
+
   /*
   {
     "id": 330651,
@@ -94,27 +117,8 @@ object repository {
     "default_branch": "master"
    */
 
-  /* Without Comments
-    case class Repository(
-    id: Long,               // "id": 330651,
-    owner: UserSearch,
-    name: String,           // "name": "bert",
-    fullName: String,       // "full_name": "mojombo/bert"
-    description: String,
-    priv: Boolean,          // "private": false,
-    htmlUrl: String, // "html_url": "https://github.com/mojombo/bert",
-    description: String,  // "description": "BERT (Binary ERlang Term) serialization library for Ruby."
-    fork: Boolean,  // "fork": false,
-    url: String,    // "url": "https://api.github.com/repos/mojombo/bert",
-    homepage: String,
-    watchersCount: Long, //"watchers_count": 138,
-    language: String,   //"language": "Ruby",
-    masterBranch: String, //"master_branch": "master",
-    defaultBranch: String //"default_branch": "master"
-  */
-
-  case class Repository(
-    id: Long,               // "id": 330651,
+  //case class Repository(
+   // id: Long,               // "id": 330651,
     /* "owner": {
       "login": "mojombo",
       "id": 1,
@@ -134,15 +138,15 @@ object repository {
       "type": "User",
       "site_admin": true
     } */
-    owner: UserSearch,
-    name: String,           // "name": "bert",
-    fullName: String,       // "full_name": "mojombo/bert"
-    description: String,
-    priv: Boolean,          // "private": false,
-    htmlUrl: String,// "html_url": "https://github.com/mojombo/bert",
-    description: String, // "description": "BERT (Binary ERlang Term) serialization library for Ruby."
-    fork: Boolean,  // "fork": false,
-    url: String,    // "url": "https://api.github.com/repos/mojombo/bert",
+    //owner: UserSearch,
+    //name: String,           // "name": "bert",
+    //fullName: String,       // "full_name": "mojombo/bert"
+    //description: String,
+    //priv: Boolean,          // "private": false,
+    //htmlUrl: String,// "html_url": "https://github.com/mojombo/bert",
+    //description: String, // "description": "BERT (Binary ERlang Term) serialization library for Ruby."
+    //fork: Boolean,  // "fork": false,
+    //url: String,    // "url": "https://api.github.com/repos/mojombo/bert",
     /* "forks_url": "https://api.github.com/repos/mojombo/bert/forks",
        "keys_url": "https://api.github.com/repos/mojombo/bert/keys{/key_id}",
        "collaborators_url": "https://api.github.com/repos/mojombo/bert/collaborators{/collaborator}",
@@ -184,10 +188,10 @@ object repository {
        "ssh_url": "git@github.com:mojombo/bert.git",
        "clone_url": "https://github.com/mojombo/bert.git",
        "svn_url": "https://github.com/mojombo/bert", */
-    homepage: String,
-    // "size": 184,
-    watchersCount: Long, //"watchers_count": 138,
-    language: String,   //"language": "Ruby",
+    //homepage: String,
+    //// "size": 184,
+    //watchersCount: Long, //"watchers_count": 138,
+    //language: String,   //"language": "Ruby",
     //"has_issues": true,
     //"has_downloads": true,
     //"has_wiki": true,
@@ -197,8 +201,6 @@ object repository {
     //"forks": 34,
     //"open_issues": 7,
     //"watchers": 138,
-    masterBranch: String, //"master_branch": "master",
-    defaultBranch: String //"default_branch": "master" */
-  )
+    //masterBranch: String, //"master_branch": "master",
+    //defaultBranch: String //"default_branch": "master" */
 }
-
