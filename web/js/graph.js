@@ -164,19 +164,14 @@ Geocodr.initGraph = function(username) {
   force.stop();
   loadingAnim();
 
-  // Load user as fixed self node
-  //   nodes[0].name = data.name;
-  //   nodes[0].img  = data.gravatar_url;
-  //   restart();
-  // });
-
   // Load user graph
   $.getJSON("/users/info/"+username, function(data) {
     nodes[0].name = data.name;
     nodes[0].img = data.avatarUrl;
     $(".node-self").find("image").attr("href", data.avatarUrl);
     $(".node-self").find("text").text(data.name);
-    // data.users.forEach(function(n) {
+    $(".location").text(data.location);
+    // data.nearbyUsers.forEach(function(n) {
     //   var r = Math.random() * 2 * Math.PI;
     //   n.x = imgWidth/2 + Math.cos(r) * 100;
     //   n.y = imgHeight/2 + Math.sin(r) * 100;
