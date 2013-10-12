@@ -157,11 +157,23 @@ Geocodr.initGraph = function(username) {
           .attr("y2", function(d) { return d.target.y; });
   }
 
+
+
+
   restart();
   force.stop();
   loadingAnim();
 
+  // Load user as fixed self node
   console.log("/users/info/"+username+".json");
+    nodes[0].name = data.name;
+    nodes[0].img  = data.gravatar_url;
+    restart();
+  });
+
+  // Load user graph
+  var loadingDelay = 1000; // ms
+
   setTimeout(function(){
   $.getJSON("/users/info/"+username+".json", function(data) {
     console.log(data);
@@ -178,5 +190,6 @@ Geocodr.initGraph = function(username) {
     // nodes = nodes.concat(data.users);
     endLoading();
   })}, 1000);
+  }, loadingDelay);
 
 };
