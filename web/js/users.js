@@ -96,7 +96,24 @@ function animateDrawer(opts) {
 
 
 $(function() {
-  drawLangPiechart('.chart-you');
-  drawLangPiechart('.chart-them');
-});
+  // TODO: Why isn't HTML autofocus working? All of my hate.
+  $('#name').focus();
 
+  $('.username-form').submit(function() {
+    var $field =  $(this).find("#name"),
+        username = $field.val();
+
+    if (username === '') {
+      $field.addClass('field-error')
+    } else {
+      // TODO: this should load the graph, this is a placeholder
+      $('.users-page-container').load('/users/' + username, function() {
+        drawLangPiechart('.chart-you');
+        drawLangPiechart('.chart-them');
+        showDrawer();
+      });
+    }
+
+    return false;
+  });
+});

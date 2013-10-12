@@ -1,0 +1,35 @@
+<html>
+<head>
+  <meta name="viewport" content="width=device-width" />
+  <link href="http://fonts.googleapis.com/css?family=Open+Sans:300" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="/assets/fonts/font-awesome/css/font-awesome.css">
+  <link href="/assets/css/application.css" media="screen" type="text/css" rel="stylesheet" />
+</head>
+<body>
+
+  <div class="login-page-container">
+    <div class="landing-container">
+
+      <div class="cta-container">
+        <h1>geocodr</h1>
+        <p>Connect with developers like you in your area.</p>
+      </div>
+
+      <div class="username-container">
+        <form action="" class="username-form">
+          <input id="name" type="text" placeholder="Enter your GitHub username" />
+          <input type="submit" class="btn btn-large btn-blue" value="Go"/>
+        </form>
+      </div>
+
+    </div><!--.landing-container -->
+  </div>
+
+  <div class="users-page-container"></div>
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  <script type="text/javascript" src="/assets/js/d3.v3.min.js"></script>
+  <script type="text/javascript" src="/assets/js/users.js"></script>
+
+</body>
+</html>

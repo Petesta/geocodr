@@ -55,13 +55,6 @@ h2 {
 //.cta-container   { outline: 1px solid green; }
 //.login-container { outline: 1px solid blue; }
 
-
-
-
-
-
-
-
 .login-page-container {
   @include clearfix;
   margin-left: 100px;
@@ -72,7 +65,8 @@ h2 {
 // circles
 .circle {
   @include border-radius(100px);
-  width: 100px;
-  height: 100px;
+  @include dimensions(100px);
   border: 2px solid rgba(0, 0, 0, .4);
 }
+
+.users-page-container {}
