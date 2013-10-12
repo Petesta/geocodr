@@ -61,6 +61,11 @@ object user {
     def repositories = ???
   }
 
+  def languages(repos: List[String]): Map[String, Float] = {
+    val len = repos.length
+    repos.groupBy { x => x }.map { case (k, v) => (k, v.length.toFloat / len) }
+  }
+
   implicit def UserCodecJson =
     casecodec19(User.apply, User.unapply)("login", "id", "avatar_url", "gravatar_id",
                                           "url", "name", "company", "blog", "location",
