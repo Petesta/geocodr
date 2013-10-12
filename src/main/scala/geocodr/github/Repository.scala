@@ -7,22 +7,29 @@ import Argonaut._
 import geocodr.github.search.Users.{ UserSearch, UserSearchEncodeJson, UserSearchDecodeJson}
 
 object repository {
+  //implicit def RepositoryInfoEncodeJson =
+  //  jencode3L((ri: RepositoryInfo) => (ri.name, ri.language, ri.watchersCount))("name", "language", "watchersCount")
+
+  //case class RepositoryInfo(name: String, language: String, watchersCount: Long)
+
   case class Repository (
     id: Long,
     owner: UserSearch,
     name: String,
     fullName: String,
-    description: String,
-    priv: Boolean,
+    description: Option[String],
+    priv: Option[Boolean],
     htmlUrl: String,
     fork: Boolean,
     url: String,
-    homepage: String,
+    homepage: Option[String],
     watchersCount: Long,
     language: String,
     masterBranch: String,
-    defaultBranch: String
-  )
+    defaultBranch: Option[String]
+  ) /*{
+    def info = RepositoryInfo(name, language, watchersCount)
+  }*/
 
   implicit def RepositoryCodecJson =
     casecodec14(Repository.apply, Repository.unapply)("id", "owner", "name", "full_name",

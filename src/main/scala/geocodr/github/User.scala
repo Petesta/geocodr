@@ -10,7 +10,7 @@ object user {
     EncodeJson((us: List[User]) => jArray(us.map(u => UserInfoEncodeJson.encode(u.info))))
 
   implicit def UserInfoEncodeJson =
-  jencode4L((ui: UserInfo) => (ui.name, ui.avatarUrl, ui.location, ui.nearbyUsers))("name", "avatarUrl", "location", "nearbyUsers")
+    jencode4L((ui: UserInfo) => (ui.name, ui.avatarUrl, ui.location, ui.nearbyUsers))("name", "avatarUrl", "location", "nearbyUsers")
 
   case class UserInfo(name: String, avatarUrl: String, location: String, nearbyUsers: List[User])
 
@@ -20,12 +20,12 @@ object user {
     avatarUrl: String,
     gravatarId: String,
     url: String,
-    name: String,
-    company: String,
+    name: Option[String],
+    company: Option[String],
     blog: Option[String],
-    location: String,
-    email: String,
-    hireable: Boolean,
+    location: Option[String],
+    email: Option[String],
+    hireable: Option[Boolean],
     bio: Option[String],
     publicRepos: Long,
     publicGists: Long,
