@@ -22,7 +22,7 @@ object HelloPlan extends unfiltered.filter.Plan {
     case req @ (GET(Path("/circle"))) =>
       Ok ~> Scalate(req, "circle.ssp")
 
-    case req @ GET(_) => Ok ~> Scalate(req, "helloWorld.ssp")
+    case req => throw new Exception(req.toString())
   }
 }
 

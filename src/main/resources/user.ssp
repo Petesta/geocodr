@@ -1,7 +1,30 @@
 <%@ var username: String %>
-<h1>user.ssp</h1>
+<h1>Hello ${username}</h1>
 
 
-<div class="container">
-Hello ${username}
-</div>
+<div class="users-container">
+
+  <section class="panel panel-photos">
+    <img class="panel-icon" src="/assets/images/glyphicons/glyphicons_000_glass.png" />
+
+  </section>
+
+
+
+  <section class="panel panel-langs">
+
+  </section>
+
+
+
+  <section class="panel panel-stars">
+
+  </section>
+
+
+
+  <section class="panel panel-follow">
+
+  </section>
+
+</div><!-- .users-container -->
