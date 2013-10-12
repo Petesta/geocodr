@@ -36,19 +36,32 @@
 
 
     <section class="panel panel-langs">
+      <i class="icon panel-icon icon-code"></i>
+
+      <p>You and Tom both write Ruby.</p>
+
+      <div class="charts-container">
+        <div class="chart"></div>
+        <div class="chart"></div>
+      </div>
 
     </section>
 
 
 
     <section class="panel panel-stars">
+      <i class="icon panel-icon icon-star-empty"></i>
+
+      <p>You and Tom have 13 starred repositories in common.</p>
 
     </section>
 
 
 
     <section class="panel panel-follow">
+      <h2>Follow Tom</h2>
 
+      <a class="btn btn-large btn-blue btn-follow-cta" href="#">Follow Tom</a>
     </section>
 
   </div><!-- .users-container -->
