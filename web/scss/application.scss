@@ -11,14 +11,21 @@ html { overflow-y: scroll; }
 
 body {
   color: $text-color;
-  font-family: 'Open Sans', Arial, sans-serif;
+  font-family: $headerFontFamily;
   font-size: 16px;
+
+  &.noise {
+    background-color: #eee;
+  }
 }
+
 
 a {
   text-decoration: none;
   &:hover { text-decoration: underline; }
 }
+
+p { font-family: $textFontFamily; }
 
 h1 {
   color: $primary;
