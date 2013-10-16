@@ -1,1 +1,1 @@
-web: target/start Web
+web: sbt run $PORT
