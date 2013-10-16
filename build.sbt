@@ -1,3 +1,9 @@
+import com.typesafe.sbt.SbtStartScript
+
+seq(SbtStartScript.startScriptForClassesSettings: _*)
+
+SbtStartScript.stage in Compile := Unit
+
 libraryDependencies ++= Seq(
   "org.scalaz" %% "scalaz-core" % "7.0.4",
   "org.scalaz" %% "scalaz-effect" % "7.0.4",
