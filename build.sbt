@@ -1,4 +1,7 @@
 import com.typesafe.sbt.SbtStartScript
+import AssemblyKeys._
+
+assemblySettings
 
 seq(SbtStartScript.startScriptForClassesSettings: _*)
 
@@ -20,3 +23,10 @@ libraryDependencies ++= Seq(
 )
 
 resolvers ++= Seq(Resolver.sonatypeRepo("snapshots"), Resolver.sonatypeRepo("releases"))
+
+mergeStrategy in assembly <<= (mergeStrategy in assembly) { (old) =>
+  {
+    case PathList(ps @ _*) if ps.last endsWith ".html" => MergeStrategy.first
+    case x => old(x)
+  }
+}

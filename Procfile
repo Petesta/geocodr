@@ -1,1 +1,1 @@
-web: sbt run --port $PORT
+web: java -cp target/scala-2.10 Geocodr 
