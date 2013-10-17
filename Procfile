@@ -1,1 +1,1 @@
-web: java -cp target/scala-2.10/ src/main/scala/geocodr/Geocodr.scala
+web: java -jar target/scala-2.10/root-assembly-0.1-SNAPSHOT.jar
