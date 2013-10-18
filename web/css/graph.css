@@ -1,0 +1,42 @@
+.graph-page-container {
+  top: 100%; }
+
+.graph-container {
+  margin: 0 auto;
+  width: 960px;
+  text-align: center; }
+  .graph-container h1 {
+    display: none; }
+  .graph-container svg {
+    height: 600px; }
+
+.back-to-login {
+  position: absolute;
+  top: 20px;
+  left: 20px; }
+
+.profile-name {
+  /* stroke: #fff; */
+  /* stroke-width: 1px; */
+  /* stroke-location: outside; */ }
+
+.graph-circle {
+  fill-opacity: 0;
+  stroke-opacity: .2;
+  stroke: #000; }
+
+.node-self .graph-circle {
+  stroke: #2ba6cb;
+  stroke-width: 8px; }
+
+.loading-dot {
+  fill: #263248; }
+
+.graph-link {
+  stroke: #aaa; }
+
+.node:hover {
+  cursor: pointer; }
+
+.node-self:hover {
+  cursor: auto; }
