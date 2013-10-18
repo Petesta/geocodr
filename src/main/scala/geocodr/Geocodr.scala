@@ -73,7 +73,7 @@ object ServerPlan extends unfiltered.filter.Plan {
 object Geocodr {
   def main(args: Array[String]) {
     val watch = future { "sass --watch web/scss:web/css".!! }
-    val server = Http(System.getenv("PORT")).context("/assets") {
+    val server = Http(java.lang.System.getenv("PORT")).context("/assets") {
       _.resources(new URL(s"file://${System.getProperty("user.dir")}/web"))
     }.filter(ServerPlan)
     server.run()
