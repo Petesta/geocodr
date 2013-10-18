@@ -1,1 +1,1 @@
-web: java -jar root-assembly-0.1-SNAPSHOT.jar $PORT
+web: sbt run $PORT
