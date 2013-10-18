@@ -74,6 +74,7 @@ object Geocodr {
   def main(args: Array[String]) {
     val watch = future { "sass --watch web/scss:web/css".!! }
     println(Integer.parseInt(System.getenv("PORT")))
+    println("I AM FUCKING HERE LOOK AT ME")
     val server = Http(Integer.parseInt(System.getenv("PORT"))).context("/assets") {
       _.resources(new URL(s"file://${System.getProperty("user.dir")}/web"))
     }.filter(ServerPlan)
